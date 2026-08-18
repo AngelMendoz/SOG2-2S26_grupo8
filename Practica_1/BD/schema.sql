@@ -86,9 +86,8 @@ CREATE INDEX IF NOT EXISTS idx_compras_navegador
 
 -- ============================================================
 -- ROL DE SOLO LECTURA (opcional, recomendado para el MCP Server)
--- Descomentar y ajustar credenciales antes de ejecutar
 -- ============================================================
--- CREATE ROLE mcp_readonly WITH LOGIN PASSWORD 'contraseña_segura';
--- GRANT CONNECT ON DATABASE ventas_online TO mcp_readonly;
--- GRANT USAGE ON SCHEMA public TO mcp_readonly;
--- GRANT SELECT ON ALL TABLES IN SCHEMA public TO mcp_readonly;
+CREATE ROLE mcp_readonly WITH LOGIN PASSWORD 'contrasena_segura';
+GRANT CONNECT ON DATABASE ventas_online TO mcp_readonly;
+GRANT USAGE ON SCHEMA public TO mcp_readonly;
+GRANT SELECT ON ALL TABLES IN SCHEMA public TO mcp_readonly;
