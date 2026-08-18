@@ -1,0 +1,144 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="8839BDAF-0EC4-F697-389B-325169962C0E" name="COMPRA">
+<createdBy>angel</createdBy>
+<createdTime>2026-08-18 03:10:02 UTC</createdTime>
+<generatorID>69A20C38-B8A7-D59F-A52F-EDA5745EE9DA</generatorID>
+<ownerDesignName>modelos-practica1</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="id_compra" id="5E41ABA7-2055-A99A-2F11-E6190D81C75A">
+<createdBy>angel</createdBy>
+<createdTime>2026-08-18 03:10:02 UTC</createdTime>
+<generatorID>A80B4E0B-E92F-BEA8-4268-CBAE46874631</generatorID>
+<ownerDesignName>modelos-practica1</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="fecha_compra" id="8ACD711B-98EA-D460-99A1-AB1340886E7F">
+<createdBy>angel</createdBy>
+<createdTime>2026-08-18 03:10:02 UTC</createdTime>
+<generatorID>B30BC9BB-E3BE-C0FA-42E7-E41110D8D33D</generatorID>
+<ownerDesignName>modelos-practica1</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT007</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="monto_compra" id="31C9ADDF-BF50-D15F-E144-768499E0CAFF">
+<createdBy>angel</createdBy>
+<createdTime>2026-08-18 03:10:02 UTC</createdTime>
+<generatorID>387D489C-49CD-786B-C609-33BB09B8C825</generatorID>
+<ownerDesignName>modelos-practica1</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT026</logicalDatatype>
+<dataTypePrecision>12</dataTypePrecision>
+<dataTypeScale>4</dataTypeScale>
+<ownDataTypeParameters>,12,4</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="metodo_pago" id="BD5D23C0-215C-44BB-4086-1725CD6E17BD">
+<createdBy>angel</createdBy>
+<createdTime>2026-08-18 03:10:02 UTC</createdTime>
+<generatorID>C44A9EB9-62A6-AF8F-3194-BB6145122A0B</generatorID>
+<ownerDesignName>modelos-practica1</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT018</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="tiempo" id="A73F581C-3024-0B8A-4013-B82F6E16DF71">
+<createdBy>angel</createdBy>
+<createdTime>2026-08-18 03:10:02 UTC</createdTime>
+<generatorID>92C20418-014E-5964-0A58-7F5DFCDED677</generatorID>
+<ownerDesignName>modelos-practica1</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="navegador" id="0ED22F0D-1508-AE85-08BC-28FAD477C40D">
+<createdBy>angel</createdBy>
+<createdTime>2026-08-18 03:10:02 UTC</createdTime>
+<generatorID>FAE7AB90-362E-8F98-AD0B-456DC94C9C07</generatorID>
+<ownerDesignName>modelos-practica1</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT018</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="boletin" id="E3132B47-F6DF-2535-4291-0C66500E4544">
+<createdBy>angel</createdBy>
+<createdTime>2026-08-18 03:10:02 UTC</createdTime>
+<generatorID>5664BCFB-E3CA-4BBF-679B-D9B4FA6A0664</generatorID>
+<ownerDesignName>modelos-practica1</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT006</logicalDatatype>
+<dataTypeSize>1</dataTypeSize>
+<ownDataTypeParameters>1,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="vale" id="2BB92583-688C-2CD2-60C3-2264AC9DF048">
+<createdBy>angel</createdBy>
+<createdTime>2026-08-18 03:10:02 UTC</createdTime>
+<generatorID>5343DA4C-4731-3066-EB04-64638C571828</generatorID>
+<ownerDesignName>modelos-practica1</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT006</logicalDatatype>
+<dataTypeSize>1</dataTypeSize>
+<ownDataTypeParameters>1,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="CLIENTE_id_cliente" id="A3B2A6D7-881A-F75A-72B0-9AA590E6329C">
+<createdBy>angel</createdBy>
+<createdTime>2026-08-18 03:10:02 UTC</createdTime>
+<generatorID>C8A9A732-5A25-EAFD-F46F-84A2AD54EDC7</generatorID>
+<ownerDesignName>modelos-practica1</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="D4461422-A27A-80BF-793A-7233F21DEDA7" referredColumn="18A809B8-160C-C5EE-F833-AB11AAB6F36F"/>
+</associations>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="913A614F-ADAB-6E32-F3D6-0AC7378B9E24" name="COMPRA_PK">
+<createdBy>angel</createdBy>
+<createdTime>2026-08-18 03:10:02 UTC</createdTime>
+<generatorID>4E0D54F4-5ACF-47F0-F797-931EAD41B592</generatorID>
+<ownerDesignName>modelos-practica1</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="5E41ABA7-2055-A99A-2F11-E6190D81C75A"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="615AEBCA-7EE2-5277-BE57-E4D78A3D0C4B" name="COMPRA_CLIENTE_FK">
+<createdBy>angel</createdBy>
+<createdTime>2026-08-18 03:10:02 UTC</createdTime>
+<generatorID>0FEC8B1E-076E-F0E7-13EB-42C617F44984</generatorID>
+<ownerDesignName>modelos-practica1</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="A3B2A6D7-881A-F75A-72B0-9AA590E6329C"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

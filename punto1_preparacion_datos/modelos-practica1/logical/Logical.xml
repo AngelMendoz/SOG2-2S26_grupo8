@@ -1,0 +1,7 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<LogicalDesign class="oracle.dbtools.crest.model.design.logical.LogicalDesign" name="Logical" id="406DD34E-6813-D92A-0570-83FCAE438A20" mainViewID="74AF09AE-9979-3D1D-2740-082EAAB6F653">
+<createdBy>angel</createdBy>
+<createdTime>2026-08-18 02:56:06 UTC</createdTime>
+<ownerDesignName>modelos-practica1</ownerDesignName>
+<shouldBeOpen>false</shouldBeOpen>
+</LogicalDesign>
