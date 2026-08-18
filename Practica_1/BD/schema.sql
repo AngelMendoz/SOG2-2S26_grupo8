@@ -3,8 +3,7 @@
 -- Script de creación de base de datos
 -- ============================================================
 -- Ejecutar como superusuario si es necesario:
--- CREATE DATABASE ventas_online;
-
+--- CREATE DATABASE ventas_online;
 -- ============================================================
 -- TABLA: clientes
 -- Contiene el perfil agregado anual de cada cliente.
@@ -87,7 +86,15 @@ CREATE INDEX IF NOT EXISTS idx_compras_navegador
 -- ============================================================
 -- ROL DE SOLO LECTURA (opcional, recomendado para el MCP Server)
 -- ============================================================
-CREATE ROLE mcp_readonly WITH LOGIN PASSWORD 'contrasena_segura';
-GRANT CONNECT ON DATABASE ventas_online TO mcp_readonly;
-GRANT USAGE ON SCHEMA public TO mcp_readonly;
-GRANT SELECT ON ALL TABLES IN SCHEMA public TO mcp_readonly;
+-- CREATE ROLE mcp_readonly WITH LOGIN PASSWORD 'contrasena_segura';
+-- GRANT CONNECT ON DATABASE ventas_online TO mcp_readonly;
+-- GRANT USAGE ON SCHEMA public TO mcp_readonly;
+-- GRANT SELECT ON ALL TABLES IN SCHEMA public TO mcp_readonly;
+
+--- Borrar bd con conexiones activas
+--- DROP DATABASE ventas_online WITH (FORCE);
+--- Borrar tablas
+--- DROP TABLE IF EXISTS compras CASCADE;
+--- DROP TABLE IF EXISTS clientes CASCADE;
+
+
