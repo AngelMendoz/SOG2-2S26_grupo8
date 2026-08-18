@@ -1,0 +1,83 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="932B250A-2BE1-AB09-E4CA-242AF45DDEB3" name="CLIENTE">
+<createdBy>angel</createdBy>
+<createdTime>2026-08-18 03:10:02 UTC</createdTime>
+<generatorID>B60AABCF-DC1D-A0E1-B4A2-DB68EFE65D6E</generatorID>
+<ownerDesignName>modelos-practica1</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="id_cliente" id="18A809B8-160C-C5EE-F833-AB11AAB6F36F">
+<createdBy>angel</createdBy>
+<createdTime>2026-08-18 03:10:02 UTC</createdTime>
+<generatorID>A7AB403F-5182-886E-3651-B906ED1FA50F</generatorID>
+<ownerDesignName>modelos-practica1</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="edad" id="8E0B2CC7-2ADE-E009-432C-347997A2A422">
+<createdBy>angel</createdBy>
+<createdTime>2026-08-18 03:10:02 UTC</createdTime>
+<generatorID>9B2E0CDA-F18A-343F-A960-26A73DD2D7AD</generatorID>
+<ownerDesignName>modelos-practica1</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT018</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="genero" id="D508BC19-3B6C-FA97-06F3-86203067B787">
+<createdBy>angel</createdBy>
+<createdTime>2026-08-18 03:10:02 UTC</createdTime>
+<generatorID>1789A76F-2F3B-8270-60DB-EE6B00BD7CA2</generatorID>
+<ownerDesignName>modelos-practica1</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT018</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="venta_total" id="6056EF4C-2F19-63E0-230E-6EE4B6BE0646">
+<createdBy>angel</createdBy>
+<createdTime>2026-08-18 03:10:02 UTC</createdTime>
+<generatorID>4AD17BAF-5C26-C427-C5D1-50B98A37231E</generatorID>
+<ownerDesignName>modelos-practica1</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT026</logicalDatatype>
+<dataTypePrecision>12</dataTypePrecision>
+<dataTypeScale>4</dataTypeScale>
+<ownDataTypeParameters>,12,4</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="n_compras" id="D2D0ADD6-02FF-92DD-3ED5-5030C2E79527">
+<createdBy>angel</createdBy>
+<createdTime>2026-08-18 03:10:02 UTC</createdTime>
+<generatorID>6D27520E-743B-1757-DB1A-9B789BB1C03C</generatorID>
+<ownerDesignName>modelos-practica1</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="BEAFDC3C-1EB3-0302-940A-2788C3EA4A3C" name="CLIENTE_PK">
+<createdBy>angel</createdBy>
+<createdTime>2026-08-18 03:10:02 UTC</createdTime>
+<generatorID>6D308216-D9C4-720C-1AA2-04A31FF1262F</generatorID>
+<ownerDesignName>modelos-practica1</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="18A809B8-160C-C5EE-F833-AB11AAB6F36F"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

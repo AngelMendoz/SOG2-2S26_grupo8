@@ -1,0 +1,8 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<OSDM_Design class="oracle.dbtools.crest.model.design.Design" name="modelos-practica1" id="8D44773A-2AD7-41D7-95C1-9BF1400FAFF9" version="3.5">
+<createdBy>angel</createdBy>
+<createdTime>2026-08-18 02:56:06 UTC</createdTime>
+<ownerDesignName>modelos-practica1</ownerDesignName>
+<capitalNames>false</capitalNames>
+<designId>8D44773A-2AD7-41D7-95C1-9BF1400FAFF9</designId>
+</OSDM_Design>

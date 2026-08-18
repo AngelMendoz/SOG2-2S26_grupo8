@@ -1,0 +1,147 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="69A20C38-B8A7-D59F-A52F-EDA5745EE9DA" name="COMPRA">
+<createdBy>angel</createdBy>
+<createdTime>2026-08-18 02:59:04 UTC</createdTime>
+<ownerDesignName>modelos-practica1</ownerDesignName>
+<engineerTo>
+<item key="95EA86E3-E05A-E0C3-529D-6B5A6BE789B5" value="true"/>
+</engineerTo>
+<adequatelyNormalized>NO</adequatelyNormalized>
+<expectedVolumes>0</expectedVolumes>
+<fwdEngineeringStrategyName>Single Table</fwdEngineeringStrategyName>
+<growthPercent>0</growthPercent>
+<growthType>Year</growthType>
+<maxVolumes>9999999</maxVolumes>
+<minVolumes>0</minVolumes>
+<normalForm>Third</normalForm>
+<attributes itemClass="oracle.dbtools.crest.model.design.logical.Attribute">
+<Attribute name="id_compra" id="A80B4E0B-E92F-BEA8-4268-CBAE46874631">
+<createdBy>angel</createdBy>
+<createdTime>2026-08-18 02:59:13 UTC</createdTime>
+<ownerDesignName>modelos-practica1</ownerDesignName>
+<engineerTo>
+<item key="95EA86E3-E05A-E0C3-529D-6B5A6BE789B5" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="fecha_compra" id="B30BC9BB-E3BE-C0FA-42E7-E41110D8D33D">
+<createdBy>angel</createdBy>
+<createdTime>2026-08-18 02:59:33 UTC</createdTime>
+<ownerDesignName>modelos-practica1</ownerDesignName>
+<engineerTo>
+<item key="95EA86E3-E05A-E0C3-529D-6B5A6BE789B5" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT007</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="monto_compra" id="387D489C-49CD-786B-C609-33BB09B8C825">
+<createdBy>angel</createdBy>
+<createdTime>2026-08-18 02:59:51 UTC</createdTime>
+<ownerDesignName>modelos-practica1</ownerDesignName>
+<engineerTo>
+<item key="95EA86E3-E05A-E0C3-529D-6B5A6BE789B5" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT026</logicalDatatype>
+<dataTypePrecision>12</dataTypePrecision>
+<dataTypeScale>4</dataTypeScale>
+<ownDataTypeParameters>,12,4</ownDataTypeParameters>
+</Attribute>
+<Attribute name="metodo_pago" id="C44A9EB9-62A6-AF8F-3194-BB6145122A0B">
+<createdBy>angel</createdBy>
+<createdTime>2026-08-18 03:00:11 UTC</createdTime>
+<ownerDesignName>modelos-practica1</ownerDesignName>
+<engineerTo>
+<item key="95EA86E3-E05A-E0C3-529D-6B5A6BE789B5" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT018</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="tiempo" id="92C20418-014E-5964-0A58-7F5DFCDED677">
+<createdBy>angel</createdBy>
+<createdTime>2026-08-18 03:00:31 UTC</createdTime>
+<ownerDesignName>modelos-practica1</ownerDesignName>
+<engineerTo>
+<item key="95EA86E3-E05A-E0C3-529D-6B5A6BE789B5" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="navegador" id="FAE7AB90-362E-8F98-AD0B-456DC94C9C07">
+<createdBy>angel</createdBy>
+<createdTime>2026-08-18 03:00:45 UTC</createdTime>
+<ownerDesignName>modelos-practica1</ownerDesignName>
+<engineerTo>
+<item key="95EA86E3-E05A-E0C3-529D-6B5A6BE789B5" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT018</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="boletin" id="5664BCFB-E3CA-4BBF-679B-D9B4FA6A0664">
+<createdBy>angel</createdBy>
+<createdTime>2026-08-18 03:00:56 UTC</createdTime>
+<ownerDesignName>modelos-practica1</ownerDesignName>
+<engineerTo>
+<item key="95EA86E3-E05A-E0C3-529D-6B5A6BE789B5" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT006</logicalDatatype>
+<dataTypeSize>1</dataTypeSize>
+<ownDataTypeParameters>1,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="vale" id="5343DA4C-4731-3066-EB04-64638C571828">
+<createdBy>angel</createdBy>
+<createdTime>2026-08-18 03:01:09 UTC</createdTime>
+<ownerDesignName>modelos-practica1</ownerDesignName>
+<engineerTo>
+<item key="95EA86E3-E05A-E0C3-529D-6B5A6BE789B5" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT006</logicalDatatype>
+<dataTypeSize>1</dataTypeSize>
+<ownDataTypeParameters>1,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="id_cliente" id="C8A9A732-5A25-EAFD-F46F-84A2AD54EDC7">
+<createdBy>angel</createdBy>
+<createdTime>2026-08-18 03:01:38 UTC</createdTime>
+<generatorID>0FEC8B1E-076E-F0E7-13EB-42C617F44984</generatorID>
+<ownerDesignName>modelos-practica1</ownerDesignName>
+<engineerTo>
+<item key="95EA86E3-E05A-E0C3-529D-6B5A6BE789B5" value="true"/>
+</engineerTo>
+<referedAttribute>A7AB403F-5182-886E-3651-B906ED1FA50F</referedAttribute>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+</attributes>
+<identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
+<identifier id="4E0D54F4-5ACF-47F0-F797-931EAD41B592" name="COMPRA PK">
+<createdBy>angel</createdBy>
+<createdTime>2026-08-18 03:00:15 UTC</createdTime>
+<ownerDesignName>modelos-practica1</ownerDesignName>
+<engineerTo>
+<item key="95EA86E3-E05A-E0C3-529D-6B5A6BE789B5" value="true"/>
+</engineerTo>
+<pk>true</pk>
+<usedAttributes>
+<attributeRef>A80B4E0B-E92F-BEA8-4268-CBAE46874631</attributeRef>
+</usedAttributes>
+</identifier>
+</identifiers>
+</Entity>
