@@ -1,0 +1,109 @@
+Preguntas que puede responder
+
+Obtención y estructura:
+
+¿Cuántos clientes existen?
+¿Cuántas compras están registradas?
+¿Cuántas filas tiene cada tabla?
+¿Qué columnas contiene la tabla clientes?
+¿Qué columnas contiene la tabla compras?
+¿Cuáles son los tipos de datos de cada columna?
+¿Cuál es el rango de fechas registrado?
+¿De qué base de datos se obtiene la información?
+¿La consulta modifica la base de datos?
+¿Cómo se obtuvieron los datos?
+¿Qué tablas fueron consultadas?
+Calidad e integridad:
+
+¿Existen valores nulos?
+¿Cuántos valores nulos hay?
+¿Existen compras sin un cliente asociado?
+¿Los identificadores de clientes son únicos?
+¿Los identificadores de compras son únicos?
+¿Qué valores contiene la variable género?
+¿Qué códigos de métodos de pago existen?
+¿Qué códigos de navegador existen?
+¿Todas las fechas corresponden a 2021?
+¿Los conteos de Pandas y PostgreSQL coinciden?
+¿Las validaciones de integridad fueron superadas?
+Estadísticas:
+
+¿Cuál es la media de la edad?
+¿Cuál es la mediana de la edad?
+¿Cuál es la moda de la edad?
+¿Cuál es la media de la venta total?
+¿Cuál es la mediana de la venta total?
+¿Cuál es la moda de la venta total?
+¿Cuál es la media del número de compras?
+¿Cuál es la mediana del número de compras?
+¿Cuál es la moda del número de compras?
+¿Cuál es la media del monto de compra?
+¿Cuál es la mediana del monto de compra?
+¿Cuál es la moda del monto de compra?
+¿Cuál es la media del tiempo de navegación?
+¿Cuál es la mediana del tiempo de navegación?
+¿Cuál es la moda del tiempo de navegación?
+Calcula media, mediana y moda de todas las variables numéricas.
+¿Cuántas veces aparece la moda de cada variable?
+¿Existe alguna variable con varias modas?
+¿Los resultados de Pandas coinciden con PostgreSQL?
+Presenta las estadísticas en una tabla.
+¿Qué variables fueron consideradas cuantitativas?
+¿Qué variables fueron excluidas de las estadísticas?
+¿Por qué género y método de pago no fueron promediados?
+¿Por qué los identificadores no se consideran variables numéricas?
+Muestras:
+
+Muéstrame cinco clientes.
+Muéstrame diez compras.
+Dame tres registros de ejemplo de clientes.
+Dame veinte registros de ejemplo de compras.
+¿Qué aspecto tienen los datos almacenados?
+Muestra una tabla con ejemplos de compras.
+El límite permitido es de 1 a 20 registros.
+
+Preguntas que todavía no puede responder
+
+Visualizaciones y distribuciones:
+
+¿Cuál es la distribución de ventas por mes?
+Genera un gráfico de ventas mensuales.
+Crea un gráfico por método de pago.
+Muestra la distribución por navegador.
+Genera un gráfico de boletines y vales.
+Crea los siete gráficos solicitados.
+Tendencias:
+
+¿Cuál fue el mes con mayores ventas?
+¿Cuál fue el mes con menores ventas?
+¿Cuál es el navegador más utilizado?
+¿Cuál es el navegador menos popular?
+¿Cuánto se pagó en efectivo o contra entrega?
+¿En qué mes se utilizaron más boletines?
+¿En qué mes se utilizaron más vales?
+Segmentación:
+
+Agrupa los clientes por rango de edad.
+¿Qué grupo de edad compra más?
+Compara las compras entre hombres y mujeres.
+¿Qué género tiene mayor venta promedio?
+Segmenta a los clientes por boletines y vales.
+Correlaciones:
+
+¿Existe correlación entre edad y venta total?
+¿El género está relacionado con el método de pago?
+¿Existe relación entre utilizar boletín y utilizar vale?
+Calcula la correlación de Pearson.
+Realiza una prueba chi-cuadrado.
+Consultas no disponibles:
+
+Busca al cliente con identificador específico.
+Filtra las compras de una fecha concreta.
+Muéstrame todas las compras, porque solo permite hasta 20.
+Calcula mínimos, máximos, desviación estándar o percentiles.
+Calcula el total acumulado de las ventas.
+Ejecuta esta consulta SQL.
+Inserta, modifica o elimina datos.
+Predice las ventas del próximo año.
+Consulta información en tiempo real.
+Compara estos resultados con otra empresa.
