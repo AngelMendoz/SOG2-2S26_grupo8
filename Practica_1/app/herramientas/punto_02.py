@@ -7,7 +7,7 @@ from typing import Any
 
 import pandas as pd
 
-from analisis_exploratorio import ejecutar_analisis
+from app.analisis.punto_02 import ejecutar_analisis
 
 
 VARIABLES_CUANTITATIVAS = [

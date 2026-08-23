@@ -15,7 +15,7 @@ from mcp import ClientSession
 from mcp.client.streamable_http import streamable_http_client
 
 
-DIRECTORIO_ANALISIS = Path(__file__).resolve().parents[1]
+RAIZ_PRACTICA = Path(__file__).resolve().parents[1]
 
 
 def _puerto_disponible() -> int:
@@ -63,8 +63,8 @@ def test_servidor_mcp_expone_e_invoca_herramientas() -> None:
     entorno["MCP_HOST"] = "127.0.0.1"
     entorno["MCP_PORT"] = str(puerto)
     proceso = subprocess.Popen(
-        [sys.executable, "mcp_server.py"],
-        cwd=DIRECTORIO_ANALISIS,
+        [sys.executable, "-m", "app.mcp_server"],
+        cwd=RAIZ_PRACTICA,
         env=entorno,
         stdout=subprocess.DEVNULL,
         stderr=subprocess.DEVNULL,
@@ -82,11 +82,12 @@ def test_servidor_mcp_expone_e_invoca_herramientas() -> None:
             proceso.kill()
             proceso.wait(timeout=5)
 
-    assert nombres == {
+    herramientas_punto_02 = {
         "obtener_resumen_datos",
         "obtener_estadisticas_basicas",
         "obtener_muestra_datos",
     }
+    assert herramientas_punto_02.issubset(nombres)
     assert nombres_adk == nombres
     assert contiene_error is False
 
@@ -94,11 +95,10 @@ def test_servidor_mcp_expone_e_invoca_herramientas() -> None:
 def test_aplicacion_del_agente_expone_salud_y_sesiones(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    sys.path.insert(0, str(DIRECTORIO_ANALISIS))
     monkeypatch.setenv("ADK_SESSION_DB_PATH", str(tmp_path / "sessions.db"))
-    sys.modules.pop("main", None)
-    from main import app
-    from ventas_agent.agent import GEMINI_MODEL, mcp_toolset, root_agent
+    sys.modules.pop("app.main", None)
+    from app.main import app
+    from app.ventas_agent.agent import GEMINI_MODEL, mcp_toolset, root_agent
 
     with TestClient(app) as cliente:
         respuesta_salud = cliente.get("/health")

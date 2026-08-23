@@ -1,15 +1,8 @@
 from __future__ import annotations
 
-import sys
-from pathlib import Path
-
 import pytest
 
-
-DIRECTORIO_ANALISIS = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(DIRECTORIO_ANALISIS))
-
-from herramientas_ventas import (  # noqa: E402
+from app.herramientas.punto_02 import (
     consultar_estadisticas_basicas,
     consultar_muestra_datos,
     consultar_resumen_datos,

@@ -14,9 +14,9 @@ from dotenv import load_dotenv
 from sqlalchemy import Connection, Engine, URL, create_engine, text
 from sqlalchemy.exc import OperationalError
 
+from app.config import RUTA_ENV, RUTA_RESULTADOS_PUNTO_02
 
-DIRECTORIO_ACTUAL = Path(__file__).resolve().parent
-ENV_PREDETERMINADO = DIRECTORIO_ACTUAL.parent / ".env"
+ENV_PREDETERMINADO = RUTA_ENV
 
 VARIABLES_NUMERICAS = (
     {"tabla": "clientes", "columna": "edad", "unidad": "anios"},
@@ -472,7 +472,7 @@ def exportar_resultados(
 
 def ejecutar_analisis(
     ruta_env: str | Path = ENV_PREDETERMINADO,
-    directorio_resultados: str | Path | None = DIRECTORIO_ACTUAL / "resultados",
+    directorio_resultados: str | Path | None = RUTA_RESULTADOS_PUNTO_02,
 ) -> dict[str, Any]:
     """Ejecuta y verifica de extremo a extremo los incisos 2.a y 2.b."""
     engine = crear_motor(ruta_env)
@@ -526,7 +526,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--env", type=Path, default=ENV_PREDETERMINADO)
     parser.add_argument(
-        "--salida", type=Path, default=DIRECTORIO_ACTUAL / "resultados"
+        "--salida", type=Path, default=RUTA_RESULTADOS_PUNTO_02
     )
     argumentos = parser.parse_args()
     try:

@@ -3,37 +3,26 @@
 from __future__ import annotations
 
 import os
-from ipaddress import ip_address
-from pathlib import Path
 from typing import Literal
 
 from dotenv import load_dotenv
 from mcp.server.fastmcp import FastMCP
 
-from herramientas_ventas import (
+from app.config import RUTA_ENV, es_host_local
+from app.herramientas.punto_02 import (
     consultar_estadisticas_basicas,
     consultar_muestra_datos,
     consultar_resumen_datos,
 )
 
 
-DIRECTORIO_ACTUAL = Path(__file__).resolve().parent
-load_dotenv(DIRECTORIO_ACTUAL.parent / ".env")
+load_dotenv(RUTA_ENV)
 
 MCP_HOST = os.getenv("MCP_HOST", "127.0.0.1")
 MCP_PORT = int(os.getenv("MCP_PORT", "8000"))
 
 
-def _es_host_local(host: str) -> bool:
-    if host.lower() == "localhost":
-        return True
-    try:
-        return ip_address(host).is_loopback
-    except ValueError:
-        return False
-
-
-if not _es_host_local(MCP_HOST):
+if not es_host_local(MCP_HOST):
     raise ValueError(
         "MCP_HOST debe ser una direccion local mientras el servidor no tenga autenticacion."
     )
@@ -49,6 +38,7 @@ mcp = FastMCP(
 )
 
 
+# Punto 2: analisis exploratorio.
 @mcp.tool()
 def obtener_resumen_datos() -> dict:
     """Obtiene desde PostgreSQL las dimensiones, columnas, tipos y validaciones."""
@@ -67,6 +57,10 @@ def obtener_muestra_datos(
 ) -> dict:
     """Obtiene entre 1 y 20 filas de muestra de la tabla clientes o compras."""
     return consultar_muestra_datos(tabla, limite)
+
+
+# Los siguientes integrantes pueden importar y registrar aqui las herramientas
+# de los puntos 3 a 6. Las pruebas aceptan herramientas adicionales.
 
 
 if __name__ == "__main__":

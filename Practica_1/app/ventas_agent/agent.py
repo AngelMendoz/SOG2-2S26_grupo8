@@ -3,15 +3,14 @@
 from __future__ import annotations
 
 import os
-from pathlib import Path
 
 from dotenv import load_dotenv
 from google.adk.agents import LlmAgent
 from google.adk.tools.mcp_tool import McpToolset, StreamableHTTPConnectionParams
 
+from app.config import RUTA_ENV
 
-DIRECTORIO_ACTUAL = Path(__file__).resolve().parent
-load_dotenv(DIRECTORIO_ACTUAL.parents[1] / ".env")
+load_dotenv(RUTA_ENV)
 
 MCP_SERVER_URL = os.getenv("MCP_SERVER_URL", "http://127.0.0.1:8000/mcp")
 GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-3.5-flash-lite")

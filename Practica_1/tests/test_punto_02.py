@@ -1,16 +1,14 @@
 from __future__ import annotations
 
-import sys
 from pathlib import Path
 
 import pandas as pd
 import pytest
 
 
-DIRECTORIO_ANALISIS = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(DIRECTORIO_ANALISIS))
+RAIZ_PRACTICA = Path(__file__).resolve().parents[1]
 
-from analisis_exploratorio import (  # noqa: E402
+from app.analisis.punto_02 import (
     ENV_PREDETERMINADO,
     VARIABLES_NUMERICAS,
     _normalizar_tipos,
@@ -136,7 +134,7 @@ def test_contraste_detecta_diferencias() -> None:
 
 
 def test_resultados_de_referencia_del_csv_oficial() -> None:
-    ruta_csv = DIRECTORIO_ANALISIS.parent / "Enunciado" / "Venta_online_c.csv"
+    ruta_csv = RAIZ_PRACTICA / "Enunciado" / "Venta_online_c.csv"
     datos = pd.read_csv(ruta_csv, sep=";")
     clientes = datos[
         ["Id_cliente", "Edad", "Genero", "Venta_total", "N_Compras"]
