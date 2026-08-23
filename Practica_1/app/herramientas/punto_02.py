@@ -1,4 +1,4 @@
-"""Funciones seguras que el servidor MCP expone al agente conversacional."""
+"""Funciones que el servidor MCP expone al agente conversacional."""
 
 from __future__ import annotations
 

@@ -1,4 +1,4 @@
-"""Servidor MCP con herramientas de analisis de ventas verificadas."""
+"""Servidor MCP con herramientas de analisis de ventas."""
 
 from __future__ import annotations
 
@@ -59,8 +59,7 @@ def obtener_muestra_datos(
     return consultar_muestra_datos(tabla, limite)
 
 
-# Los siguientes integrantes pueden importar y registrar aqui las herramientas
-# de los puntos 3 a 6. Las pruebas aceptan herramientas adicionales.
+# Registrar aqui las herramientas de los puntos 3 a 6.
 
 
 if __name__ == "__main__":
