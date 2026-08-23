@@ -145,12 +145,10 @@ Las herramientas no deben aceptar SQL libre. Los calculos deben poder verificars
 
 - Trabajar desde `Practica_1` y usar imports que comiencen con `app.`.
 - Crear una rama propia antes de implementar un punto.
-- No modificar ni eliminar trabajo de otro integrante sin coordinarlo.
 - Mantener las consultas analiticas en modo de solo lectura.
 - Limitar los parametros y la cantidad de registros devueltos al agente.
 - Ejecutar las pruebas antes de solicitar integracion.
 - Actualizar el informe solo con resultados comprobados.
-- No agregar nuevos README; mantener esta guia y el informe de `Documentacion` como los dos documentos principales.
 
 ## Problemas frecuentes
 
