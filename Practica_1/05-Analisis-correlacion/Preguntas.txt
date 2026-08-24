@@ -1,0 +1,26 @@
+Preguntas para probar el análisis de correlación (Punto 5)
+
+Venta Total vs Edad
+
+Investiga si existe una relacion entre el total de la venta y la edad del cliente
+¿Cuál es el coeficiente de correlación de Pearson entre edad y venta total?
+¿La relación entre edad y venta total es significativa?
+
+Género vs Método de Pago
+
+Examina si hay una correlacion entre el genero del cliente y el metodo de pago preferido
+¿Qué tan fuerte es la asociación entre género y método de pago?
+Muéstrame la tabla de contingencia entre género y método de pago
+
+Boletín vs Vale
+
+Investiga si existe una correlacion entre los clientes que utilizan boletines y vales
+¿Los clientes que reciben el boletín tienden a usar más vales?
+¿Es significativa la relación entre boletín y vale?
+
+
+Limitaciones actuales
+
+No calcula correlación entre otras combinaciones de variables (ej. navegador y método de pago)
+No genera una matriz de correlación con todas las variables a la vez
+No distingue causalidad, solo correlación estadística
