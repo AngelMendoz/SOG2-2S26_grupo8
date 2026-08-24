@@ -1,0 +1,17 @@
+Preguntas sugeridas para probar la Inteligencia Artificial (Segmentación de Clientes)
+
+Copia y pega estas preguntas en el chat del Agente (http://127.0.0.1:8080) para validar que la segmentación de clientes funciona correctamente.
+
+--- Segmentación por Edad ---
+1. Agrupa a los clientes por rango de edad y dime qué grupo generó mayores ventas totales.
+2. ¿Cuál es el promedio de compras y la venta promedio para los clientes entre 26 y 35 años?
+3. ¿Cuántos clientes tenemos registrados que tengan 65 años o más?
+
+--- Segmentación por Género ---
+4. Compara el comportamiento de compra entre géneros. ¿Quién tiene la mayor venta total acumulada, el género Femenino o el Masculino?
+5. ¿Existe alguna diferencia significativa en la venta promedio por compra entre hombres y mujeres?
+
+--- Uso de Boletines y Vales ---
+6. Agrupa a los clientes según si usan vales o boletines. ¿Cuál de estos grupos realiza la mayor cantidad de compras?
+7. ¿Cuál es el monto total de las compras realizadas por clientes que utilizaron un vale pero no un boletín?
+8. ¿Los clientes que usan tanto boletín como vale tienen un monto promedio más alto que los clientes "Normales"?

@@ -14,6 +14,11 @@ from app.herramientas.punto_02 import (
     consultar_muestra_datos,
     consultar_resumen_datos,
 )
+from app.herramientas.punto_04 import (
+    consultar_segmentacion_edad,
+    consultar_segmentacion_genero,
+    consultar_impacto_boletines_vales,
+)
 
 
 load_dotenv(RUTA_ENV)
@@ -60,6 +65,21 @@ def obtener_muestra_datos(
 
 
 # Registrar aqui las herramientas de los puntos 3 a 6.
+
+@mcp.tool()
+def obtener_segmentacion_edad() -> dict:
+    """Agrupa a los clientes por edad y analiza patrones de compra."""
+    return consultar_segmentacion_edad()
+
+@mcp.tool()
+def obtener_segmentacion_genero() -> dict:
+    """Compara el comportamiento de compra entre géneros (Femenino y Masculino)."""
+    return consultar_segmentacion_genero()
+
+@mcp.tool()
+def obtener_impacto_boletines_vales() -> dict:
+    """Analiza los patrones de compra basados en si usaron vales o boletines."""
+    return consultar_impacto_boletines_vales()
 
 
 if __name__ == "__main__":
