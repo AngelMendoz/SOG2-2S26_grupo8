@@ -8,13 +8,17 @@ import os
 from pathlib import Path
 from typing import Any
 
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+import seaborn as sns
 from dotenv import load_dotenv
 from sqlalchemy import Connection, Engine, URL, create_engine, text
 from sqlalchemy.exc import OperationalError
 
 from app.config import RUTA_ENV, RUTA_RESULTADOS_PUNTO_02
+
+sns.set_theme(style="whitegrid")
 
 ENV_PREDETERMINADO = RUTA_ENV
 
@@ -295,6 +299,272 @@ def calcular_estadisticas_basicas(
             )
         )
     return pd.DataFrame(resultados)
+
+
+# Punto 2.c: distribucion de ventas por mes, metodo de pago, navegador, boletin y vale.
+
+MESES = {
+    1: "Enero",
+    2: "Febrero",
+    3: "Marzo",
+    4: "Abril",
+    5: "Mayo",
+    6: "Junio",
+    7: "Julio",
+    8: "Agosto",
+    9: "Septiembre",
+    10: "Octubre",
+    11: "Noviembre",
+    12: "Diciembre",
+}
+
+METODOS_PAGO = {0: "Efectivo", 1: "Tarjeta de Credito", 2: "Tarjeta de Debito"}
+
+NAVEGADORES = {
+    0: "Tienda Fisica",
+    1: "Navegador 1",
+    2: "Navegador 2",
+    3: "Navegador 3",
+    4: "Navegador 4",
+}
+
+USO_BOOLEANO = {True: "Si", False: "No"}
+
+
+def _graficar_barras(
+    resumen: pd.DataFrame,
+    x: str,
+    y: str,
+    titulo: str,
+    etiqueta_x: str,
+    etiqueta_y: str,
+    nombre_archivo: str,
+    directorio_resultados: str | Path | None,
+    paleta: str = "viridis",
+) -> None:
+    plt.figure(figsize=(9, 5))
+    sns.barplot(data=resumen, x=x, y=y, hue=x, palette=paleta, legend=False)
+    plt.title(titulo, fontsize=14)
+    plt.xlabel(etiqueta_x)
+    plt.ylabel(etiqueta_y)
+    plt.xticks(rotation=20)
+    if directorio_resultados is not None:
+        directorio_resultados = Path(directorio_resultados)
+        directorio_resultados.mkdir(parents=True, exist_ok=True)
+        plt.savefig(directorio_resultados / nombre_archivo, bbox_inches="tight")
+    plt.show()
+    plt.close()
+
+
+def distribucion_ventas_por_mes(
+    compras: pd.DataFrame,
+    directorio_resultados: str | Path | None = None,
+    graficar: bool = True,
+) -> pd.DataFrame:
+    """Distribuye el monto y la cantidad de compras por mes calendario de 2021."""
+    df = compras.copy()
+    df["mes"] = df["fecha_compra"].dt.month
+    resumen = (
+        df.groupby("mes")
+        .agg(
+            cantidad_compras=("id_compra", "count"),
+            monto_total=("monto_compra", "sum"),
+            monto_promedio=("monto_compra", "mean"),
+        )
+        .reindex(range(1, 13), fill_value=0)
+        .rename_axis("mes")
+        .reset_index()
+    )
+    resumen["mes_nombre"] = resumen["mes"].map(MESES)
+
+    if graficar:
+        plt.figure(figsize=(10, 5))
+        sns.lineplot(
+            data=resumen, x="mes_nombre", y="monto_total", marker="o", sort=False
+        )
+        plt.title("Ventas Totales por Mes", fontsize=14)
+        plt.xlabel("Mes")
+        plt.ylabel("Ventas Totales ($)")
+        plt.xticks(rotation=45)
+        if directorio_resultados is not None:
+            directorio_resultados = Path(directorio_resultados)
+            directorio_resultados.mkdir(parents=True, exist_ok=True)
+            plt.savefig(
+                directorio_resultados / "distribucion_ventas_mes.png",
+                bbox_inches="tight",
+            )
+        plt.show()
+        plt.close()
+
+    return resumen[
+        ["mes", "mes_nombre", "cantidad_compras", "monto_total", "monto_promedio"]
+    ]
+
+
+def distribucion_ventas_por_metodo_pago(
+    compras: pd.DataFrame,
+    directorio_resultados: str | Path | None = None,
+    graficar: bool = True,
+) -> pd.DataFrame:
+    """Distribuye las compras segun el metodo de pago utilizado."""
+    df = compras.copy()
+    df["metodo_pago_desc"] = df["metodo_pago"].map(METODOS_PAGO)
+    resumen = (
+        df.groupby("metodo_pago_desc")
+        .agg(
+            cantidad_compras=("id_compra", "count"),
+            monto_total=("monto_compra", "sum"),
+            monto_promedio=("monto_compra", "mean"),
+        )
+        .reset_index()
+        .sort_values("cantidad_compras", ascending=False)
+        .reset_index(drop=True)
+    )
+
+    if graficar:
+        _graficar_barras(
+            resumen,
+            x="metodo_pago_desc",
+            y="cantidad_compras",
+            titulo="Distribucion de Ventas por Metodo de Pago",
+            etiqueta_x="Metodo de Pago",
+            etiqueta_y="Cantidad de Compras",
+            nombre_archivo="distribucion_ventas_metodo_pago.png",
+            directorio_resultados=directorio_resultados,
+            paleta="Set2",
+        )
+
+    return resumen
+
+
+def distribucion_ventas_por_navegador(
+    compras: pd.DataFrame,
+    directorio_resultados: str | Path | None = None,
+    graficar: bool = True,
+) -> pd.DataFrame:
+    """Distribuye las compras segun el navegador utilizado (0 es tienda fisica)."""
+    df = compras.copy()
+    df["navegador_desc"] = df["navegador"].map(NAVEGADORES)
+    resumen = (
+        df.groupby("navegador_desc")
+        .agg(
+            cantidad_compras=("id_compra", "count"),
+            monto_total=("monto_compra", "sum"),
+            monto_promedio=("monto_compra", "mean"),
+        )
+        .reset_index()
+        .sort_values("cantidad_compras", ascending=False)
+        .reset_index(drop=True)
+    )
+
+    if graficar:
+        _graficar_barras(
+            resumen,
+            x="navegador_desc",
+            y="cantidad_compras",
+            titulo="Distribucion de Ventas por Navegador",
+            etiqueta_x="Navegador",
+            etiqueta_y="Cantidad de Compras",
+            nombre_archivo="distribucion_ventas_navegador.png",
+            directorio_resultados=directorio_resultados,
+            paleta="magma",
+        )
+
+    return resumen
+
+
+def distribucion_ventas_por_boletin(
+    compras: pd.DataFrame,
+    directorio_resultados: str | Path | None = None,
+    graficar: bool = True,
+) -> pd.DataFrame:
+    """Distribuye las compras segun si se uso boletin."""
+    df = compras.copy()
+    df["boletin_desc"] = df["boletin"].map(USO_BOOLEANO)
+    resumen = (
+        df.groupby("boletin_desc")
+        .agg(
+            cantidad_compras=("id_compra", "count"),
+            monto_total=("monto_compra", "sum"),
+            monto_promedio=("monto_compra", "mean"),
+        )
+        .reset_index()
+        .sort_values("boletin_desc")
+        .reset_index(drop=True)
+    )
+
+    if graficar:
+        _graficar_barras(
+            resumen,
+            x="boletin_desc",
+            y="cantidad_compras",
+            titulo="Distribucion de Ventas por Uso de Boletin",
+            etiqueta_x="Uso de Boletin",
+            etiqueta_y="Cantidad de Compras",
+            nombre_archivo="distribucion_ventas_boletin.png",
+            directorio_resultados=directorio_resultados,
+            paleta="crest",
+        )
+
+    return resumen
+
+
+def distribucion_ventas_por_vale(
+    compras: pd.DataFrame,
+    directorio_resultados: str | Path | None = None,
+    graficar: bool = True,
+) -> pd.DataFrame:
+    """Distribuye las compras segun si se uso vale."""
+    df = compras.copy()
+    df["vale_desc"] = df["vale"].map(USO_BOOLEANO)
+    resumen = (
+        df.groupby("vale_desc")
+        .agg(
+            cantidad_compras=("id_compra", "count"),
+            monto_total=("monto_compra", "sum"),
+            monto_promedio=("monto_compra", "mean"),
+        )
+        .reset_index()
+        .sort_values("vale_desc")
+        .reset_index(drop=True)
+    )
+
+    if graficar:
+        _graficar_barras(
+            resumen,
+            x="vale_desc",
+            y="cantidad_compras",
+            titulo="Distribucion de Ventas por Uso de Vale",
+            etiqueta_x="Uso de Vale",
+            etiqueta_y="Cantidad de Compras",
+            nombre_archivo="distribucion_ventas_vale.png",
+            directorio_resultados=directorio_resultados,
+            paleta="flare",
+        )
+
+    return resumen
+
+
+def ejecutar_distribucion_ventas(
+    compras: pd.DataFrame,
+    directorio_resultados: str | Path | None = RUTA_RESULTADOS_PUNTO_02,
+) -> dict[str, pd.DataFrame]:
+    """Ejecuta el punto 2.c completo y devuelve las 5 tablas resumen."""
+    resultados = {
+        "mes": distribucion_ventas_por_mes(compras, directorio_resultados),
+        "metodo_pago": distribucion_ventas_por_metodo_pago(
+            compras, directorio_resultados
+        ),
+        "navegador": distribucion_ventas_por_navegador(
+            compras, directorio_resultados
+        ),
+        "boletin": distribucion_ventas_por_boletin(compras, directorio_resultados),
+        "vale": distribucion_ventas_por_vale(compras, directorio_resultados),
+    }
+    for nombre, resumen in resultados.items():
+        print(f"\nDistribucion de ventas por {nombre}")
+        print(resumen.to_string(index=False))
+    return resultados
 
 
 def _obtener_estadisticas_sql_conexion(conexion: Connection) -> pd.DataFrame:
