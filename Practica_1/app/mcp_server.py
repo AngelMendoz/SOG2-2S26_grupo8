@@ -20,6 +20,12 @@ from app.herramientas.punto_04 import (
     consultar_impacto_boletines_vales,
 )
 
+from app.herramientas.punto_05 import (
+    consultar_correlacion_venta_edad, 
+    consultar_correlacion_genero_metodo_pago, 
+    consultar_correlacion_boletin_vale, 
+)
+
 
 load_dotenv(RUTA_ENV)
 
@@ -80,6 +86,21 @@ def obtener_segmentacion_genero() -> dict:
 def obtener_impacto_boletines_vales() -> dict:
     """Analiza los patrones de compra basados en si usaron vales o boletines."""
     return consultar_impacto_boletines_vales()
+
+@mcp.tool()
+def obtener_correlacion_venta_edad() -> dict:
+    """Investiga si existe una relacion entre la venta total y la edad del cliente."""
+    return consultar_correlacion_venta_edad()
+
+@mcp.tool()
+def obtener_correlacion_genero_metodo_pago() -> dict:
+    """Examina si hay correlacion entre el genero del cliente y su metodo de pago preferido."""
+    return consultar_correlacion_genero_metodo_pago()
+
+@mcp.tool()
+def obtener_correlacion_boletin_vale() -> dict:
+    """Investiga si existe correlacion entre el uso de boletin y de vale."""
+    return consultar_correlacion_boletin_vale()
 
 
 if __name__ == "__main__":
