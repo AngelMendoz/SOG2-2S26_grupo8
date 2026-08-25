@@ -14,6 +14,12 @@ from app.herramientas.punto_02 import (
     consultar_muestra_datos,
     consultar_resumen_datos,
 )
+from app.herramientas.punto_03 import (
+    consultar_boletines_vales_por_mes,
+    consultar_navegador_preferido,
+    consultar_ventas_efectivo_contra_entrega,
+    consultar_ventas_por_mes,
+)
 from app.herramientas.punto_04 import (
     consultar_segmentacion_edad,
     consultar_segmentacion_genero,
@@ -70,8 +76,31 @@ def obtener_muestra_datos(
     return consultar_muestra_datos(tabla, limite)
 
 
-# Registrar aqui las herramientas de los puntos 3 a 6.
-
+# Punto 3: analisis de tendencias.
+@mcp.tool()
+def obtener_ventas_por_mes() -> dict:
+    """Determina los meses de 2021 con mayores y menores ventas totales."""
+    return consultar_ventas_por_mes()
+ 
+ 
+@mcp.tool()
+def obtener_navegador_preferido() -> dict:
+    """Identifica el navegador/canal mas preferido y el menos popular."""
+    return consultar_navegador_preferido()
+ 
+ 
+@mcp.tool()
+def obtener_ventas_efectivo_contra_entrega() -> dict:
+    """Identifica el total de ventas pagadas en efectivo o contra entrega."""
+    return consultar_ventas_efectivo_contra_entrega()
+ 
+ 
+@mcp.tool()
+def obtener_boletines_vales_por_mes() -> dict:
+    """Identifica los meses donde se usaron mas boletines y mas vales."""
+    return consultar_boletines_vales_por_mes()
+ 
+# Punto 4: segmentacion de clientes.
 @mcp.tool()
 def obtener_segmentacion_edad() -> dict:
     """Agrupa a los clientes por edad y analiza patrones de compra."""
