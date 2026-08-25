@@ -15,3 +15,12 @@ Copia y pega estas preguntas en el chat del Agente (http://127.0.0.1:8080) para 
 6. Agrupa a los clientes según si usan vales o boletines. ¿Cuál de estos grupos realiza la mayor cantidad de compras?
 7. ¿Cuál es el monto total de las compras realizadas por clientes que utilizaron un vale pero no un boletín?
 8. ¿Los clientes que usan tanto boletín como vale tienen un monto promedio más alto que los clientes "Normales"?
+18. Muéstrame las gráficas del impacto que tiene usar boletines y vales en las compras.
+
+--- Probando las nuevas reglas del analista experto ---
+19. ¿Cuál es el mejor rango de edad para vender?
+20. ¿Cuál tipo de cliente es mejor: el que usa boletín o el que usa vales?
+21. Dame un resumen de todas las ventas divididas por género, muéstrame las gráficas correspondientes.
+22. Analiza el impacto de los vales y boletines, y entrégame las cifras de forma ordenada.
+23. Agrupa a los clientes por edad, dame el resumen de las ventas y muéstrame las gráficas correspondientes.
+24. ¿Cuál es la edad promedio exacta de los clientes que hicieron compras?
