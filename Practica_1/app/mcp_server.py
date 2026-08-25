@@ -22,10 +22,12 @@ from app.herramientas.punto_04 import (
 )
 
 from app.herramientas.punto_05 import (
-    consultar_correlacion_venta_edad, 
-    consultar_correlacion_genero_metodo_pago, 
-    consultar_correlacion_boletin_vale, 
+    consultar_correlacion_venta_edad,
+    consultar_correlacion_genero_metodo_pago,
+    consultar_correlacion_boletin_vale,
 )
+
+from app.herramientas.punto_06 import consultar_hallazgos_disponibles
 
 
 load_dotenv(RUTA_ENV)
@@ -111,6 +113,14 @@ def obtener_correlacion_genero_metodo_pago() -> dict:
 def obtener_correlacion_boletin_vale() -> dict:
     """Investiga si existe correlacion entre el uso de boletin y de vale."""
     return consultar_correlacion_boletin_vale()
+
+
+# Punto 6: visualizacion de datos.
+@mcp.tool()
+def obtener_hallazgos_disponibles() -> dict:
+    """Lista los graficos disponibles que resumen los hallazgos mas importantes
+    del analisis (punto 6)."""
+    return consultar_hallazgos_disponibles()
 
 
 if __name__ == "__main__":

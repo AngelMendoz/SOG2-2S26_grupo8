@@ -13,6 +13,7 @@ from google.genai import types as genai_types
 
 from app.config import RUTA_ENV
 from app.herramientas.punto_02 import consultar_grafico_distribucion_ventas
+from app.herramientas.punto_06 import consultar_grafico_hallazgo
 
 load_dotenv(RUTA_ENV)
 
@@ -50,6 +51,25 @@ async def obtener_grafico_ventas(dimension: str, tool_context: ToolContext) -> d
         "nota": "El grafico quedo adjunto a esta conversacion como artifact.",
     }
 
+
+async def obtener_grafico_hallazgo(clave: str, tool_context: ToolContext) -> dict:
+    """Adjunta a la conversacion, como artifact, el grafico de un hallazgo
+    especifico del punto 6 (usar obtener_hallazgos_disponibles para ver las
+    claves validas)."""
+    imagen = consultar_grafico_hallazgo(clave)
+    datos = Path(imagen.path).read_bytes()
+    parte = genai_types.Part.from_bytes(data=datos, mime_type="image/png")
+    nombre_archivo = f"hallazgo_{clave}.png"
+    version = await tool_context.save_artifact(filename=nombre_archivo, artifact=parte)
+    return {
+        "exito": True,
+        "hallazgo": clave,
+        "artifact": nombre_archivo,
+        "version": version,
+        "nota": "El grafico del hallazgo quedo adjunto a esta conversacion como artifact.",
+    }
+
+
 root_agent = LlmAgent(
     name="ventas_agent",
     model=GEMINI_MODEL,
@@ -70,14 +90,16 @@ Reglas obligatorias:
 10. El alcance actual cubre los incisos 2.a, 2.b, 2.c y 4 (segmentación). Usa obtener_segmentacion_edad, obtener_segmentacion_genero y obtener_impacto_boletines_vales cuando pregunten por edades, géneros, vales o boletines.
 11. Para la distribucion de ventas por mes, metodo de pago, navegador, boletin o vale usa obtener_distribucion_ventas indicando la dimension solicitada (mes, metodo_pago, navegador, boletin o vale).
 12. Si el usuario pide ver, mostrar o adjuntar el grafico (no solo los datos), usa obtener_grafico_ventas con la misma dimension. Confirma que el grafico quedo adjunto, no describas su contenido visual.
-13. Si preguntan por analisis aun no implementados, explica brevemente esa limitacion.
-14. Responde primero con el resultado. No describas el procedimiento antes de responder.
-15. No menciones nombres internos de herramientas, MCP, REPEATABLE READ, transacciones
+13. Si preguntan que hallazgos o resumenes visuales hay disponibles, usa obtener_hallazgos_disponibles.
+14. Si piden ver el grafico de un hallazgo especifico, usa obtener_grafico_hallazgo con la clave correspondiente. Confirma que quedo adjunto, no describas su contenido visual.
+15. Si preguntan por analisis aun no implementados, explica brevemente esa limitacion.
+16. Responde primero con el resultado. No describas el procedimiento antes de responder.
+17. No menciones nombres internos de herramientas, MCP, REPEATABLE READ, transacciones
     ni reglas metodologicas, excepto cuando el usuario pregunte especificamente por ellos.
-16. Evita introducciones como "Para responder a tu consulta" y no repitas explicaciones
+18. Evita introducciones como "Para responder a tu consulta" y no repitas explicaciones
     sobre variables excluidas si el usuario no las solicito.
 
 Responde en espanol de forma clara, concisa y apropiada para un informe academico.
 """,
-    tools=[mcp_toolset, obtener_grafico_ventas],
+    tools=[mcp_toolset, obtener_grafico_ventas, obtener_grafico_hallazgo],
 )

@@ -101,6 +101,7 @@ def test_aplicacion_del_agente_expone_salud_y_sesiones(
     from app.ventas_agent.agent import (
         GEMINI_MODEL,
         mcp_toolset,
+        obtener_grafico_hallazgo,
         obtener_grafico_ventas,
         root_agent,
     )
@@ -124,4 +125,8 @@ def test_aplicacion_del_agente_expone_salud_y_sesiones(
     assert respuesta_sesion.status_code == 200
     assert respuesta_sesion.json()["id"] == "sesion-prueba"
     assert root_agent.model == GEMINI_MODEL
-    assert root_agent.tools == [mcp_toolset, obtener_grafico_ventas]
+    assert root_agent.tools == [
+        mcp_toolset,
+        obtener_grafico_ventas,
+        obtener_grafico_hallazgo,
+    ]
