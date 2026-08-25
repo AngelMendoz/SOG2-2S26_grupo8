@@ -1,0 +1,67 @@
+Preguntas que puede responder (Punto 3 — Análisis de tendencias)
+
+3.a Ventas por mes:
+
+¿Cuál fue el mes con mayores ventas?
+¿Cuál fue el mes con menores ventas?
+¿Cuáles son las ventas totales de cada mes de 2021?
+Muéstrame una tabla con las ventas por mes.
+¿Cuántas compras hubo en cada mes?
+¿Cuál es la venta promedio por mes?
+
+3.b Navegador / canal preferido:
+
+¿Cuál es el navegador más utilizado?
+¿Cuál es el navegador menos popular?
+¿Qué canal de venta prefieren los clientes: tienda física o web?
+¿Cuántas compras se hicieron por cada navegador?
+Muéstrame una tabla con las compras por navegador.
+
+3.c Efectivo y contra entrega:
+
+¿Cuánto se pagó en efectivo o contra entrega?
+¿Qué porcentaje de las ventas se pagó en efectivo o contra entrega?
+¿Cuántas compras se pagaron en efectivo o contra entrega?
+¿Cuál es el total de ventas por cada método de pago?
+Muéstrame una tabla con las ventas por método de pago.
+
+3.d Boletines y vales por mes:
+
+¿En qué mes se utilizaron más boletines?
+¿En qué mes se utilizaron más vales?
+Muéstrame el uso de boletines y vales por mes.
+¿Cuántas compras usaron boletín en cada mes?
+¿Cuántas compras usaron vale en cada mes?
+
+Generales del punto 3:
+
+Dame un resumen del análisis de tendencias.
+¿Qué conclusiones se pueden sacar del análisis de tendencias de 2021?
+
+Preguntas que todavía no puede responder aquí
+
+Fuera del alcance del punto 3 (pertenecen a otras carpetas/puntos):
+
+¿Cuántos clientes existen? (ver 02-Analisis-exploratorio)
+¿Cuál es la media, mediana o moda de la edad / venta total / tiempo? (ver 02-Analisis-exploratorio)
+Agrupa los clientes por rango de edad. (ver punto 4 — segmentación)
+Compara las compras entre hombres y mujeres. (ver punto 4 — segmentación)
+¿Existe correlación entre edad y venta total? (ver punto 5 — correlación)
+¿El género está relacionado con el método de pago? (ver punto 5 — correlación)
+
+Visualizaciones dentro del chat:
+
+Genera el gráfico de ventas mensuales y muéstramelo en el chat.
+Envíame la imagen del gráfico de navegadores.
+(Los gráficos se generan y se guardan como .png al correr tendencias.ipynb,
+en 03-Analisis-tendencia/resultados/; el agente conversacional describe los
+resultados en texto, no envía imágenes.)
+
+Consultas no disponibles (aplican a todo el proyecto):
+
+Filtra las ventas de una fecha o cliente específico.
+Calcula mínimos, máximos, desviación estándar o percentiles de las ventas.
+Predice las ventas del próximo mes o año.
+Ejecuta esta consulta SQL.
+Inserta, modifica o elimina datos.
+Compara estos resultados con otra empresa o periodo distinto a 2021.
