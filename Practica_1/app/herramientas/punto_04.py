@@ -36,6 +36,10 @@ def consultar_segmentacion_edad() -> dict[str, Any]:
         "exito": True, # Bandera para que la IA sepa que no hubo errores
         "segmento": "Rango de Edad", # Nombre de la operación
         "datos": _registros_json(resumen), # Transforma tu resumen Pandas a JSON y se lo da a la IA
+        "graficas_url": [
+            "http://127.0.0.1:8080/graficas/ventas_por_edad.png",
+            "http://127.0.0.1:8080/graficas/venta_promedio_edad.png"
+        ],
         "nota": "Los rangos de edad están definidos en intervalos (ej. 18-25, 26-35, etc.)." # Pista para la IA
     }
 
@@ -48,6 +52,10 @@ def consultar_segmentacion_genero() -> dict[str, Any]:
         "exito": True,
         "segmento": "Género",
         "datos": _registros_json(resumen), # Retorna los datos como texto JSON
+        "graficas_url": [
+            "http://127.0.0.1:8080/graficas/ventas_por_genero.png",
+            "http://127.0.0.1:8080/graficas/venta_promedio_genero.png"
+        ],
         "nota": "Género 1 fue mapeado a Femenino y Género 0 a Masculino." # Le explica a la IA qué significaba el 0 y 1
     }
 
@@ -60,5 +68,9 @@ def consultar_impacto_boletines_vales() -> dict[str, Any]:
         "exito": True,
         "segmento": "Uso de Boletín y Vale",
         "datos": _registros_json(resumen), # Envía la respuesta formateada a la IA
+        "graficas_url": [
+            "http://127.0.0.1:8080/graficas/monto_por_boletin_vale.png",
+            "http://127.0.0.1:8080/graficas/monto_promedio_boletin_vale.png"
+        ],
         "nota": "Clasifica las compras según si se usó solo boletín, solo vale, ambos o ninguno (Normal)." # Ayuda de contexto
     }

@@ -8,6 +8,7 @@ from pathlib import Path
 import uvicorn
 from dotenv import load_dotenv
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
 from google.adk.cli.fast_api import get_fast_api_app
 
 from app.config import RAIZ_PRACTICA, RUTA_ENV, es_host_local
@@ -37,6 +38,10 @@ app: FastAPI = get_fast_api_app(
     ],
     web=True,
 )
+
+directorio_resultados = RAIZ_PRACTICA / '04-Segmentacion-clientes' / 'resultados'
+if directorio_resultados.exists():
+    app.mount("/graficas", StaticFiles(directory=str(directorio_resultados)), name="graficas")
 
 
 if __name__ == "__main__":
