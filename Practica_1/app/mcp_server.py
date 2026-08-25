@@ -10,6 +10,7 @@ from mcp.server.fastmcp import FastMCP
 
 from app.config import RUTA_ENV, es_host_local
 from app.herramientas.punto_02 import (
+    consultar_distribucion_ventas,
     consultar_estadisticas_basicas,
     consultar_muestra_datos,
     consultar_resumen_datos,
@@ -68,6 +69,15 @@ def obtener_muestra_datos(
 ) -> dict:
     """Obtiene entre 1 y 20 filas de muestra de la tabla clientes o compras."""
     return consultar_muestra_datos(tabla, limite)
+
+
+@mcp.tool()
+def obtener_distribucion_ventas(
+    dimension: Literal["mes", "metodo_pago", "navegador", "boletin", "vale"],
+) -> dict:
+    """Obtiene la distribucion de compras y montos por mes, metodo de pago,
+    navegador, boletin o vale."""
+    return consultar_distribucion_ventas(dimension)
 
 
 # Registrar aqui las herramientas de los puntos 3 a 6.

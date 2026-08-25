@@ -6,9 +6,34 @@ import json
 from typing import Any
 
 import pandas as pd
+from mcp.server.fastmcp import Image
 
-from app.analisis.punto_02 import ejecutar_analisis
+from app.analisis.punto_02 import (
+    distribucion_ventas_por_boletin,
+    distribucion_ventas_por_mes,
+    distribucion_ventas_por_metodo_pago,
+    distribucion_ventas_por_navegador,
+    distribucion_ventas_por_vale,
+    ejecutar_analisis,
+)
+from app.config import RUTA_RESULTADOS_PUNTO_02
 
+NOMBRES_ARCHIVO_DISTRIBUCION = {
+    "mes": "distribucion_ventas_mes.png",
+    "metodo_pago": "distribucion_ventas_metodo_pago.png",
+    "navegador": "distribucion_ventas_navegador.png",
+    "boletin": "distribucion_ventas_boletin.png",
+    "vale": "distribucion_ventas_vale.png",
+}
+
+
+DIMENSIONES_DISTRIBUCION = {
+    "mes": distribucion_ventas_por_mes,
+    "metodo_pago": distribucion_ventas_por_metodo_pago,
+    "navegador": distribucion_ventas_por_navegador,
+    "boletin": distribucion_ventas_por_boletin,
+    "vale": distribucion_ventas_por_vale,
+}
 
 VARIABLES_CUANTITATIVAS = [
     "edad",
@@ -89,3 +114,48 @@ def consultar_muestra_datos(tabla: str = "clientes", limite: int = 5) -> dict[st
         "datos": _registros_json(muestra),
         "nota": "La respuesta es una muestra ordenada y no el conjunto completo.",
     }
+
+
+def consultar_distribucion_ventas(dimension: str) -> dict[str, Any]:
+    """Obtiene la distribucion de compras y montos segun mes, metodo de pago,
+    navegador, boletin o vale (punto 2.c)."""
+    if dimension not in DIMENSIONES_DISTRIBUCION:
+        raise ValueError(
+            "La dimension debe ser una de: "
+            + ", ".join(sorted(DIMENSIONES_DISTRIBUCION))
+        )
+
+    resultado = ejecutar_analisis(directorio_resultados=None)
+    funcion = DIMENSIONES_DISTRIBUCION[dimension]
+    distribucion = funcion(resultado["compras"], graficar=False)
+
+    return {
+        "exito": True,
+        "dimension": dimension,
+        "datos": _registros_json(distribucion),
+        "nota": (
+            "La distribucion se calculo sobre las compras obtenidas de PostgreSQL. "
+            "El grafico correspondiente se genera por separado y no se envia en esta respuesta."
+        ),
+    }
+
+
+def consultar_grafico_distribucion_ventas(dimension: str) -> Image:
+    """Genera y devuelve como imagen PNG el grafico de distribucion de ventas
+    para una dimension especifica (punto 2.c)."""
+    if dimension not in DIMENSIONES_DISTRIBUCION:
+        raise ValueError(
+            "La dimension debe ser una de: "
+            + ", ".join(sorted(DIMENSIONES_DISTRIBUCION))
+        )
+
+    resultado = ejecutar_analisis(directorio_resultados=None)
+    funcion = DIMENSIONES_DISTRIBUCION[dimension]
+    funcion(
+        resultado["compras"],
+        directorio_resultados=RUTA_RESULTADOS_PUNTO_02,
+        graficar=True,
+        mostrar=False,
+    )
+    ruta_imagen = RUTA_RESULTADOS_PUNTO_02 / NOMBRES_ARCHIVO_DISTRIBUCION[dimension]
+    return Image(path=ruta_imagen)

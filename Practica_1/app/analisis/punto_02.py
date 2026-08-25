@@ -341,6 +341,7 @@ def _graficar_barras(
     nombre_archivo: str,
     directorio_resultados: str | Path | None,
     paleta: str = "viridis",
+    mostrar: bool = True,
 ) -> None:
     plt.figure(figsize=(9, 5))
     sns.barplot(data=resumen, x=x, y=y, hue=x, palette=paleta, legend=False)
@@ -352,7 +353,8 @@ def _graficar_barras(
         directorio_resultados = Path(directorio_resultados)
         directorio_resultados.mkdir(parents=True, exist_ok=True)
         plt.savefig(directorio_resultados / nombre_archivo, bbox_inches="tight")
-    plt.show()
+    if mostrar:
+        plt.show()
     plt.close()
 
 
@@ -360,6 +362,7 @@ def distribucion_ventas_por_mes(
     compras: pd.DataFrame,
     directorio_resultados: str | Path | None = None,
     graficar: bool = True,
+    mostrar: bool = True,
 ) -> pd.DataFrame:
     """Distribuye el monto y la cantidad de compras por mes calendario de 2021."""
     df = compras.copy()
@@ -393,7 +396,8 @@ def distribucion_ventas_por_mes(
                 directorio_resultados / "distribucion_ventas_mes.png",
                 bbox_inches="tight",
             )
-        plt.show()
+        if mostrar:
+            plt.show()
         plt.close()
 
     return resumen[
@@ -405,6 +409,7 @@ def distribucion_ventas_por_metodo_pago(
     compras: pd.DataFrame,
     directorio_resultados: str | Path | None = None,
     graficar: bool = True,
+    mostrar: bool = True,
 ) -> pd.DataFrame:
     """Distribuye las compras segun el metodo de pago utilizado."""
     df = compras.copy()
@@ -432,6 +437,7 @@ def distribucion_ventas_por_metodo_pago(
             nombre_archivo="distribucion_ventas_metodo_pago.png",
             directorio_resultados=directorio_resultados,
             paleta="Set2",
+            mostrar=mostrar,
         )
 
     return resumen
@@ -441,6 +447,7 @@ def distribucion_ventas_por_navegador(
     compras: pd.DataFrame,
     directorio_resultados: str | Path | None = None,
     graficar: bool = True,
+    mostrar: bool = True,
 ) -> pd.DataFrame:
     """Distribuye las compras segun el navegador utilizado (0 es tienda fisica)."""
     df = compras.copy()
@@ -468,6 +475,7 @@ def distribucion_ventas_por_navegador(
             nombre_archivo="distribucion_ventas_navegador.png",
             directorio_resultados=directorio_resultados,
             paleta="magma",
+            mostrar=mostrar,
         )
 
     return resumen
@@ -477,6 +485,7 @@ def distribucion_ventas_por_boletin(
     compras: pd.DataFrame,
     directorio_resultados: str | Path | None = None,
     graficar: bool = True,
+    mostrar: bool = True,
 ) -> pd.DataFrame:
     """Distribuye las compras segun si se uso boletin."""
     df = compras.copy()
@@ -504,6 +513,7 @@ def distribucion_ventas_por_boletin(
             nombre_archivo="distribucion_ventas_boletin.png",
             directorio_resultados=directorio_resultados,
             paleta="crest",
+            mostrar=mostrar,
         )
 
     return resumen
@@ -513,6 +523,7 @@ def distribucion_ventas_por_vale(
     compras: pd.DataFrame,
     directorio_resultados: str | Path | None = None,
     graficar: bool = True,
+    mostrar: bool = True,
 ) -> pd.DataFrame:
     """Distribuye las compras segun si se uso vale."""
     df = compras.copy()
@@ -540,6 +551,7 @@ def distribucion_ventas_por_vale(
             nombre_archivo="distribucion_ventas_vale.png",
             directorio_resultados=directorio_resultados,
             paleta="flare",
+            mostrar=mostrar,
         )
 
     return resumen

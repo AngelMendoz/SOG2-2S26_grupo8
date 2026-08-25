@@ -3,6 +3,7 @@ from __future__ import annotations
 import pytest
 
 from app.herramientas.punto_02 import (
+    consultar_distribucion_ventas,
     consultar_estadisticas_basicas,
     consultar_muestra_datos,
     consultar_resumen_datos,
@@ -17,6 +18,11 @@ def test_muestra_rechaza_tabla_no_permitida() -> None:
 def test_muestra_rechaza_limites_no_permitidos() -> None:
     with pytest.raises(ValueError, match="entre 1 y 20"):
         consultar_muestra_datos("clientes", 21)
+
+
+def test_distribucion_rechaza_dimension_no_permitida() -> None:
+    with pytest.raises(ValueError, match="mes.*metodo_pago"):
+        consultar_distribucion_ventas("region")
 
 
 @pytest.mark.integration
@@ -55,3 +61,27 @@ def test_muestra_para_el_agente_es_acotada() -> None:
     assert resultado["tabla"] == "compras"
     assert resultado["filas_mostradas"] == 3
     assert len(resultado["datos"]) == 3
+
+
+@pytest.mark.integration
+def test_distribucion_por_mes_cubre_todas_las_compras() -> None:
+    resultado = consultar_distribucion_ventas("mes")
+
+    assert resultado["exito"] is True
+    assert resultado["dimension"] == "mes"
+    assert len(resultado["datos"]) == 12
+    assert sum(fila["cantidad_compras"] for fila in resultado["datos"]) == 6500
+
+
+@pytest.mark.integration
+def test_distribucion_por_navegador_incluye_las_cinco_categorias() -> None:
+    resultado = consultar_distribucion_ventas("navegador")
+
+    assert resultado["exito"] is True
+    assert {fila["navegador_desc"] for fila in resultado["datos"]} == {
+        "Tienda Fisica",
+        "Navegador 1",
+        "Navegador 2",
+        "Navegador 3",
+        "Navegador 4",
+    }
