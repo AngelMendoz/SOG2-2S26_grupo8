@@ -1,6 +1,4 @@
-Preguntas sugeridas para probar la Inteligencia Artificial (Visualizacion de Datos)
-
-Copia y pega estas preguntas en el chat del Agente (http://127.0.0.1:8080) para validar que el punto 6 funciona correctamente.
+Preguntas (Visualizacion de Datos)
 
 --- Catalogo de hallazgos ---
 1. ¿Qué hallazgos o graficos resumen tienes disponibles?
