@@ -76,6 +76,21 @@ python -m app.analisis.punto_02
 
 Los archivos generados quedan en `02-Analisis-exploratorio/resultados/`.
 
+El inciso 2.b calcula media, mediana y moda para las diez variables enumeradas por la rubrica:
+
+```text
+edad, genero, venta_total, n_compras, monto_compra,
+metodo_pago, tiempo, navegador, boletin, vale
+```
+
+Los identificadores quedan excluidos. `genero`, `metodo_pago`, `navegador`, `boletin` y `vale` se conservan como categorias codificadas; se calculan las medidas solicitadas, pero su interpretacion de negocio prioriza moda y proporciones. Cada resultado se contrasta de forma independiente con PostgreSQL y se exporta en:
+
+- `resultados/estadisticas_basicas.csv`
+- `resultados/estadisticas_sql.csv`
+- `resultados/contraste_pandas_sql.csv`
+- `resultados/validaciones_extraccion.csv`
+- `resultados/resumen_extraccion.json`
+
 Para usar Jupyter localmente:
 
 ```powershell
@@ -112,7 +127,7 @@ Abrir `http://127.0.0.1:8080`, seleccionar `ventas_agent` y crear una conversaci
 
 ```text
 Consulta la base y dime cuantos clientes y compras hay.
-Calcula media, mediana y moda de las variables numericas.
+Calcula media, mediana y moda de las diez variables solicitadas.
 Muestrame tres registros de compras.
 ```
 
@@ -122,6 +137,12 @@ Suite completa, incluida la conexion con PostgreSQL:
 
 ```powershell
 python -m pytest -v
+```
+
+Validacion focalizada de los incisos 2.a y 2.b:
+
+```powershell
+python -m pytest -v tests/test_punto_02.py tests/test_herramientas_punto_02.py
 ```
 
 Pruebas que no requieren la base en la nube:

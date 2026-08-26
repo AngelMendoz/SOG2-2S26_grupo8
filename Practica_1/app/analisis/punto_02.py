@@ -23,11 +23,68 @@ sns.set_theme(style="whitegrid")
 ENV_PREDETERMINADO = RUTA_ENV
 
 VARIABLES_NUMERICAS = (
-    {"tabla": "clientes", "columna": "edad", "unidad": "anios"},
-    {"tabla": "clientes", "columna": "venta_total", "unidad": "moneda"},
-    {"tabla": "clientes", "columna": "n_compras", "unidad": "compras"},
-    {"tabla": "compras", "columna": "monto_compra", "unidad": "moneda"},
-    {"tabla": "compras", "columna": "tiempo", "unidad": "segundos"},
+    {
+        "tabla": "clientes",
+        "columna": "edad",
+        "unidad": "anios",
+        "tipo_variable": "cuantitativa",
+    },
+    {
+        "tabla": "clientes",
+        "columna": "genero",
+        "unidad": "codigo 0/1",
+        "tipo_variable": "categorica codificada",
+    },
+    {
+        "tabla": "clientes",
+        "columna": "venta_total",
+        "unidad": "moneda",
+        "tipo_variable": "cuantitativa",
+    },
+    {
+        "tabla": "clientes",
+        "columna": "n_compras",
+        "unidad": "compras",
+        "tipo_variable": "cuantitativa",
+    },
+    {
+        "tabla": "compras",
+        "columna": "monto_compra",
+        "unidad": "moneda",
+        "tipo_variable": "cuantitativa",
+    },
+    {
+        "tabla": "compras",
+        "columna": "metodo_pago",
+        "unidad": "codigo 0-2",
+        "tipo_variable": "categorica codificada",
+    },
+    {
+        "tabla": "compras",
+        "columna": "tiempo",
+        "unidad": "segundos",
+        "tipo_variable": "cuantitativa",
+    },
+    {
+        "tabla": "compras",
+        "columna": "navegador",
+        "unidad": "codigo 0-4",
+        "tipo_variable": "categorica codificada",
+    },
+    {
+        "tabla": "compras",
+        "columna": "boletin",
+        "unidad": "codigo 0/1",
+        "tipo_variable": "categorica codificada",
+        "expresion_sql": "boletin::integer",
+    },
+    {
+        "tabla": "compras",
+        "columna": "vale",
+        "unidad": "codigo 0/1",
+        "tipo_variable": "categorica codificada",
+        "expresion_sql": "vale::integer",
+    },
 )
 
 CONSULTA_CLIENTES = """
@@ -261,7 +318,13 @@ def _formatear_valor(valor: Any) -> str:
     return format(numero, ".12g")
 
 
-def _resumir_serie(tabla: str, columna: str, unidad: str, serie: pd.Series) -> dict[str, Any]:
+def _resumir_serie(
+    tabla: str,
+    columna: str,
+    unidad: str,
+    tipo_variable: str,
+    serie: pd.Series,
+) -> dict[str, Any]:
     valores = pd.to_numeric(serie, errors="raise").dropna()
     if valores.empty:
         raise ValueError(f"No hay datos para calcular {tabla}.{columna}")
@@ -272,6 +335,7 @@ def _resumir_serie(tabla: str, columna: str, unidad: str, serie: pd.Series) -> d
         "tabla": tabla,
         "variable": columna,
         "unidad": unidad,
+        "tipo_variable": tipo_variable,
         "cantidad": int(valores.size),
         "nulos": int(serie.isna().sum()),
         "media": float(valores.mean()),
@@ -285,7 +349,7 @@ def _resumir_serie(tabla: str, columna: str, unidad: str, serie: pd.Series) -> d
 def calcular_estadisticas_basicas(
     clientes: pd.DataFrame, compras: pd.DataFrame
 ) -> pd.DataFrame:
-    """Calcula media, mediana y todas las modas de variables cuantitativas."""
+    """Calcula las medidas exigidas para variables cuantitativas y codificadas."""
     resultados = []
     for especificacion in VARIABLES_NUMERICAS:
         tabla = especificacion["tabla"]
@@ -295,6 +359,7 @@ def calcular_estadisticas_basicas(
                 tabla,
                 especificacion["columna"],
                 especificacion["unidad"],
+                especificacion["tipo_variable"],
                 datos[especificacion["columna"]],
             )
         )
@@ -584,14 +649,15 @@ def _obtener_estadisticas_sql_conexion(conexion: Connection) -> pd.DataFrame:
     for especificacion in VARIABLES_NUMERICAS:
         tabla = especificacion["tabla"]
         columna = especificacion["columna"]
+        expresion_sql = especificacion.get("expresion_sql", columna)
         resumen = conexion.execute(
             text(
                 f"""
                 SELECT COUNT({columna}) AS cantidad,
                        COUNT(*) - COUNT({columna}) AS nulos,
-                       AVG({columna}) AS media,
+                       AVG({expresion_sql}) AS media,
                        percentile_cont(0.5)
-                           WITHIN GROUP (ORDER BY {columna}) AS mediana
+                           WITHIN GROUP (ORDER BY {expresion_sql}) AS mediana
                 FROM public.{tabla}
                 """
             )
@@ -600,10 +666,10 @@ def _obtener_estadisticas_sql_conexion(conexion: Connection) -> pd.DataFrame:
             text(
                 f"""
                 WITH frecuencias AS (
-                    SELECT {columna} AS valor, COUNT(*) AS frecuencia
+                    SELECT {expresion_sql} AS valor, COUNT(*) AS frecuencia
                     FROM public.{tabla}
                     WHERE {columna} IS NOT NULL
-                    GROUP BY {columna}
+                    GROUP BY {expresion_sql}
                 )
                 SELECT valor, frecuencia
                 FROM frecuencias

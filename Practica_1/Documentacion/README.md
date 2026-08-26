@@ -164,37 +164,44 @@ Las tablas se consultaron por separado en una transaccion PostgreSQL `READ ONLY`
 
 *Figura 12. Obtencion de 6,500 clientes y 6,500 compras desde PostgreSQL.*
 
-### 5.2 Seleccion de variables numericas
+### 5.2 Seleccion de variables
 
-Se calcularon medidas para `edad`, `venta_total`, `n_compras`, `monto_compra` y `tiempo`. Se excluyeron identificadores y categorias codificadas porque calcular su media o mediana no tiene interpretacion de negocio.
+De acuerdo con la rubrica, se calcularon media, mediana y moda para `edad`, `genero`, `venta_total`, `n_compras`, `monto_compra`, `metodo_pago`, `tiempo`, `navegador`, `boletin` y `vale`. Los identificadores se excluyeron porque no representan medidas ni categorias analizables.
+
+`Genero`, `metodo_pago`, `navegador`, `boletin` y `vale` son categorias codificadas. Sus tres estadisticas se reportan para satisfacer el criterio de evaluacion, pero para interpretarlas se priorizan la moda, su frecuencia y las proporciones. En los campos booleanos se utiliza `False = 0` y `True = 1`.
 
 ### 5.3 Media, mediana y moda
 
-| Variable | Unidad | Registros | Media | Mediana | Moda | Frecuencia de la moda |
-|---|---|---:|---:|---:|---:|---:|
-| Edad | Años | 6,500 | 36.305231 | 36.0000 | 18 | 465 |
-| Venta total | Moneda | 6,500 | 206.242431 | 137.3500 | 98.0000 | 12 |
-| Numero de compras | Compras | 6,500 | 5.090000 | 4.0000 | 2 | 1,044 |
-| Monto de compra | Moneda | 6,500 | 39.787056 | 35.7640 | 37.1450 | 5 |
-| Tiempo | Segundos | 6,500 | 767.376154 | 768.0000 | 852 | 24 |
+| Variable | Tipo | Unidad | Registros | Media | Mediana | Moda | Frecuencia de la moda |
+|---|---|---|---:|---:|---:|---:|---:|
+| Edad | Cuantitativa | Años | 6,500 | 36.305231 | 36.000 | 18 | 465 |
+| Genero | Categorica codificada | Codigo 0/1 | 6,500 | 0.481231 | 0.000 | 0 | 3,372 |
+| Venta total | Cuantitativa | Moneda | 6,500 | 206.242431 | 137.350 | 98 | 12 |
+| Numero de compras | Cuantitativa | Compras | 6,500 | 5.090000 | 4.000 | 2 | 1,044 |
+| Monto de compra | Cuantitativa | Moneda | 6,500 | 39.787056 | 35.764 | 37.145 | 5 |
+| Metodo de pago | Categorica codificada | Codigo 0-2 | 6,500 | 1.039846 | 1.000 | 1 | 3,827 |
+| Tiempo | Cuantitativa | Segundos | 6,500 | 767.376154 | 768.000 | 852 | 24 |
+| Navegador | Categorica codificada | Codigo 0-4 | 6,500 | 0.882308 | 0.000 | 0 | 3,523 |
+| Boletin | Categorica codificada | Codigo 0/1 | 6,500 | 0.449385 | 0.000 | 0 | 3,579 |
+| Vale | Categorica codificada | Codigo 0/1 | 6,500 | 0.192923 | 0.000 | 0 | 5,246 |
 
-![Estadisticas basicas](imgs/Analisis-exploratorio/Captura%20de%20pantalla%202026-08-22%20231551.png)
+![Estadisticas de las diez variables](imgs/Analisis-exploratorio/estadisticas-10-variables.png)
 
-*Figura 13. Estadisticas calculadas con Pandas.*
+*Figura 13. Media, mediana y moda de las diez variables enumeradas por la rubrica.*
 
-La venta total presenta una media mayor que la mediana, lo que indica influencia de clientes con ventas acumuladas altas. El numero de compras más frecuente es dos. En tiempo de sesión, media y mediana son muy cercanas.
+La venta total presenta una media mayor que la mediana, lo que indica influencia de clientes con ventas acumuladas altas. El numero de compras mas frecuente es dos y, en tiempo de sesion, media y mediana son muy cercanas. Entre las variables codificadas, las modas indican genero `0` (masculino), metodo de pago `1` (tarjeta de credito), navegador `0` (tienda fisica), ausencia de boletin y ausencia de vale. Las medias de los booleanos equivalen a proporciones: 44.94% utilizo boletin y 19.29% utilizo vale.
 
 ### 5.4 Verificacion independiente
 
-PostgreSQL recalculo la media con `AVG`, la mediana con `percentile_cont(0.5)` y la moda mediante frecuencias agrupadas. Los cinco resultados coincidieron con Pandas.
+PostgreSQL recalculo la media con `AVG`, la mediana con `percentile_cont(0.5)` y la moda mediante frecuencias agrupadas. Para los booleanos aplico una conversion explicita a entero. Los diez resultados coincidieron con Pandas.
 
-![Contraste Pandas y SQL](imgs/Analisis-exploratorio/Captura%20de%20pantalla%202026-08-22%20231556.png)
+![Contraste Pandas y SQL](imgs/Analisis-exploratorio/contraste-10-variables.png)
 
-*Figura 14. Contraste independiente entre Pandas y PostgreSQL.*
+*Figura 14. Contraste independiente de las diez variables entre Pandas y PostgreSQL.*
 
 ## 6. Integracion conversacional disponible
 
-La base del agente ya permite solicitar el resumen de datos, las estadisticas basicas y muestras limitadas. Google ADK se conecta al servidor MCP, y este invoca funciones deterministas que consultan PostgreSQL en modo de solo lectura. El modelo no recibe credenciales ni ejecuta SQL libre.
+La base del agente ya permite solicitar el resumen de datos, las estadisticas basicas de las diez variables y muestras limitadas. Google ADK se conecta al servidor MCP, y este invoca funciones deterministas que consultan PostgreSQL en modo de solo lectura. El modelo no recibe credenciales ni ejecuta SQL libre.
 
 ![Consulta al agente](imgs/Analisis-exploratorio/Captura%20de%20pantalla%202026-08-22%20231558.png)
 
@@ -206,7 +213,7 @@ La base del agente ya permite solicitar el resumen de datos, las estadisticas ba
 |---|---|
 | El CSV usa un separador distinto de la coma | Se configuro explicitamente `sep=';'`. |
 | La fecha venía como texto | Se convirtio con formato controlado y se valido el año 2021. |
-| Las categorias estan representadas por numeros | Se conservaron como categorias y no se promediaron. |
+| La rubrica solicita estadisticas de categorias codificadas | Se calcularon sobre sus codigos, se contrastaron con PostgreSQL y se aclaro que moda y proporciones son las medidas interpretables. |
 | Era necesario proteger la base durante el analisis | Se usaron transacciones de solo lectura. |
 | Pandas y SQL pueden implementar estadisticas de forma distinta | Se realizo un contraste independiente de cada medida. |
 | El agente podria inventar o alterar cifras | Los calculos se ejecutan en herramientas MCP deterministas. |

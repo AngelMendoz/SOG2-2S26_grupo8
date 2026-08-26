@@ -58,15 +58,32 @@ def test_calcula_media_mediana_y_todas_las_modas() -> None:
     assert estadisticas.loc["edad", "cantidad_modas"] == 2
     assert estadisticas.loc["monto_compra", "moda"] == "5.5"
     assert estadisticas.loc["tiempo", "frecuencia_moda"] == 2
+    assert estadisticas.loc["genero", "media"] == 0.5
+    assert estadisticas.loc["genero", "mediana"] == 0.5
+    assert estadisticas.loc["genero", "moda"] == "0, 1"
+    assert estadisticas.loc["metodo_pago", "moda"] == "1"
+    assert estadisticas.loc["navegador", "moda"] == "0, 1, 2, 3"
+    assert estadisticas.loc["boletin", "media"] == 0.5
+    assert estadisticas.loc["boletin", "moda"] == "0, 1"
+    assert estadisticas.loc["vale", "mediana"] == 0.5
 
 
-def test_solo_incluye_variables_cuantitativas() -> None:
+def test_incluye_todas_las_variables_solicitadas_y_excluye_identificadores() -> None:
     columnas = {item["columna"] for item in VARIABLES_NUMERICAS}
 
-    assert columnas == {"edad", "venta_total", "n_compras", "monto_compra", "tiempo"}
-    assert columnas.isdisjoint(
-        {"id_cliente", "id_compra", "genero", "metodo_pago", "navegador", "boletin", "vale"}
-    )
+    assert columnas == {
+        "edad",
+        "genero",
+        "venta_total",
+        "n_compras",
+        "monto_compra",
+        "metodo_pago",
+        "tiempo",
+        "navegador",
+        "boletin",
+        "vale",
+    }
+    assert columnas.isdisjoint({"id_cliente", "id_compra"})
 
 
 def test_valida_integridad_de_datos_correctos() -> None:
@@ -148,8 +165,17 @@ def test_resultados_de_referencia_del_csv_oficial() -> None:
         }
     )
     compras = datos[
-        ["MontoCompra", "Tiempo"]
-    ].rename(columns={"MontoCompra": "monto_compra", "Tiempo": "tiempo"})
+        ["MontoCompra", "MetodoPago", "Tiempo", "Navegador", "Boletin", "Vale"]
+    ].rename(
+        columns={
+            "MontoCompra": "monto_compra",
+            "MetodoPago": "metodo_pago",
+            "Tiempo": "tiempo",
+            "Navegador": "navegador",
+            "Boletin": "boletin",
+            "Vale": "vale",
+        }
+    )
 
     estadisticas = calcular_estadisticas_basicas(clientes, compras).set_index("variable")
 
@@ -157,12 +183,21 @@ def test_resultados_de_referencia_del_csv_oficial() -> None:
     assert estadisticas.loc["edad", "media"] == pytest.approx(36.3052307692)
     assert estadisticas.loc["edad", "mediana"] == 36
     assert estadisticas.loc["edad", "moda"] == "18"
+    assert estadisticas.loc["genero", "media"] == pytest.approx(0.4812307692)
+    assert estadisticas.loc["genero", "mediana"] == 0
+    assert estadisticas.loc["genero", "moda"] == "0"
     assert estadisticas.loc["venta_total", "media"] == pytest.approx(206.2424307692)
     assert estadisticas.loc["venta_total", "mediana"] == pytest.approx(137.35)
     assert estadisticas.loc["venta_total", "moda"] == "98"
     assert estadisticas.loc["n_compras", "moda"] == "2"
     assert estadisticas.loc["monto_compra", "moda"] == "37.145"
+    assert estadisticas.loc["metodo_pago", "moda"] == "1"
     assert estadisticas.loc["tiempo", "moda"] == "852"
+    assert estadisticas.loc["navegador", "moda"] == "0"
+    assert estadisticas.loc["boletin", "media"] == pytest.approx(2921 / 6500)
+    assert estadisticas.loc["boletin", "moda"] == "0"
+    assert estadisticas.loc["vale", "media"] == pytest.approx(1254 / 6500)
+    assert estadisticas.loc["vale", "moda"] == "0"
 
 
 @pytest.mark.integration
@@ -175,6 +210,6 @@ def test_pipeline_completo_con_base_de_datos(tmp_path: Path) -> None:
     assert len(resultado["compras"]) == resultado["control"]["compras_sql"]
     assert resultado["validaciones"]["cumple"].all()
     assert resultado["contraste"]["todo_coincide"].all()
-    assert len(resultado["estadisticas"]) == 5
+    assert len(resultado["estadisticas"]) == 10
     assert (tmp_path / "estadisticas_basicas.csv").is_file()
     assert (tmp_path / "resumen_extraccion.json").is_file()

@@ -67,7 +67,7 @@ def obtener_resumen_datos() -> dict:
 
 @mcp.tool()
 def obtener_estadisticas_basicas() -> dict:
-    """Calcula media, mediana y moda de todas las variables cuantitativas."""
+    """Calcula media, mediana y moda de las diez variables solicitadas en 2.b."""
     return consultar_estadisticas_basicas()
 
 

@@ -43,7 +43,7 @@ VARIABLES_CUANTITATIVAS = [
     "tiempo",
 ]
 
-VARIABLES_CATEGORICAS_EXCLUIDAS = [
+VARIABLES_CATEGORICAS_CODIFICADAS = [
     "genero",
     "metodo_pago",
     "navegador",
@@ -74,7 +74,7 @@ def consultar_resumen_datos() -> dict[str, Any]:
 
 
 def consultar_estadisticas_basicas() -> dict[str, Any]:
-    """Calcula y contrasta media, mediana y moda para variables cuantitativas."""
+    """Calcula y contrasta las medidas de las diez variables solicitadas."""
     resultado = ejecutar_analisis(directorio_resultados=None)
     estadisticas = resultado["estadisticas"].copy()
     estadisticas[["media", "mediana"]] = estadisticas[
@@ -85,14 +85,19 @@ def consultar_estadisticas_basicas() -> dict[str, Any]:
     ]
     return {
         "exito": True,
+        "variables_analizadas": (
+            VARIABLES_CUANTITATIVAS + VARIABLES_CATEGORICAS_CODIFICADAS
+        ),
         "variables_cuantitativas": VARIABLES_CUANTITATIVAS,
-        "variables_categoricas_excluidas": VARIABLES_CATEGORICAS_EXCLUIDAS,
+        "variables_categoricas_codificadas": VARIABLES_CATEGORICAS_CODIFICADAS,
         "estadisticas": _registros_json(estadisticas),
         "contraste_postgresql": _registros_json(contraste),
         "todo_coincide": bool(contraste["todo_coincide"].all()),
         "nota": (
-            "Los identificadores y codigos categoricos no se promedian. "
-            "La moda conserva todos los empates."
+            "Los identificadores se excluyen. Para cumplir la rubrica se calculan "
+            "las tres medidas sobre los codigos categoricos, pero estos se interpretan "
+            "principalmente mediante la moda y sus proporciones. La moda conserva "
+            "todos los empates."
         ),
     }
 
