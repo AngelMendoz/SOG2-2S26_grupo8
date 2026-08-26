@@ -43,13 +43,18 @@ def test_estadisticas_para_el_agente_estan_contrastadas() -> None:
 
     assert resultado["exito"] is True
     assert resultado["todo_coincide"] is True
-    assert len(resultado["estadisticas"]) == 5
+    assert len(resultado["estadisticas"]) == 10
     assert {fila["variable"] for fila in resultado["estadisticas"]} == {
         "edad",
+        "genero",
         "venta_total",
         "n_compras",
         "monto_compra",
+        "metodo_pago",
         "tiempo",
+        "navegador",
+        "boletin",
+        "vale",
     }
 
 
