@@ -1,0 +1,6 @@
+tabla,variable,unidad,cantidad,nulos,media,mediana,moda,frecuencia_moda,cantidad_modas
+clientes,edad,anios,6500,0,36.305231,36.0,18,465,1
+clientes,venta_total,moneda,6500,0,206.242431,137.35,98,12,1
+clientes,n_compras,compras,6500,0,5.09,4.0,2,1044,1
+compras,monto_compra,moneda,6500,0,39.787056,35.764,37.145,5,1
+compras,tiempo,segundos,6500,0,767.376154,768.0,852,24,1

@@ -9,6 +9,8 @@ RUTA_ENV = RAIZ_PRACTICA / ".env"
 RUTA_ENUNCIADO = RAIZ_PRACTICA / "Enunciado"
 RUTA_PUNTO_02 = RAIZ_PRACTICA / "02-Analisis-exploratorio"
 RUTA_RESULTADOS_PUNTO_02 = RUTA_PUNTO_02 / "resultados"
+RUTA_PUNTO_06 = RAIZ_PRACTICA / "06-Visualizacion-datos"
+RUTA_RESULTADOS_PUNTO_06 = RUTA_PUNTO_06 / "resultados"
 
 
 def es_host_local(host: str) -> bool:
