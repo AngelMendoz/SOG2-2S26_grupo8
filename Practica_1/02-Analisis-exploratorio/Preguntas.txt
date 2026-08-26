@@ -62,16 +62,21 @@ Dame veinte registros de ejemplo de compras.
 Muestra una tabla con ejemplos de compras.
 El límite permitido es de 1 a 20 registros.
 
-Preguntas que todavía no puede responder
-
-Visualizaciones y distribuciones:
+Distribución de ventas (2.c):
 
 ¿Cuál es la distribución de ventas por mes?
-Genera un gráfico de ventas mensuales.
-Crea un gráfico por método de pago.
-Muestra la distribución por navegador.
-Genera un gráfico de boletines y vales.
-Crea los siete gráficos solicitados.
+¿Cuál es la distribución de ventas por método de pago?
+¿Cuál es la distribución de ventas por navegador?
+¿Cuál es la distribución de ventas por boletín?
+¿Cuál es la distribución de ventas por vale?
+Muéstrame el gráfico de ventas por mes.
+Enséñame el gráfico de método de pago.
+Muéstrame el gráfico de navegador.
+Enséñame el gráfico de boletín.
+Muéstrame el gráfico de vale.
+
+Preguntas que todavía no puede responder
+
 Tendencias:
 
 ¿Cuál fue el mes con mayores ventas?
