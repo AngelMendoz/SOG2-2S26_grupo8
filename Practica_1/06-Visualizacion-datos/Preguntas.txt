@@ -1,0 +1,13 @@
+Preguntas (Visualizacion de Datos)
+
+--- Catalogo de hallazgos ---
+1. ¿Qué hallazgos o graficos resumen tienes disponibles?
+
+--- Graficos individuales (deben adjuntarse como artifact en el chat) ---
+2. Muéstrame el gráfico de ventas por mes.
+3. Enséñame el hallazgo del navegador más usado.
+4. Muéstrame el gráfico de ventas por rango de edad.
+5. Muéstrame el gráfico de ventas por género.
+6. Enséñame el gráfico de boletín y vale.
+7. Muéstrame la correlación entre venta total y edad.
+8. Enséñame el gráfico de género contra método de pago.

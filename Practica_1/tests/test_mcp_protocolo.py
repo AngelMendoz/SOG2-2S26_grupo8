@@ -98,7 +98,13 @@ def test_aplicacion_del_agente_expone_salud_y_sesiones(
     monkeypatch.setenv("ADK_SESSION_DB_PATH", str(tmp_path / "sessions.db"))
     sys.modules.pop("app.main", None)
     from app.main import app
-    from app.ventas_agent.agent import GEMINI_MODEL, mcp_toolset, root_agent
+    from app.ventas_agent.agent import (
+        GEMINI_MODEL,
+        mcp_toolset,
+        obtener_grafico_hallazgo,
+        obtener_grafico_ventas,
+        root_agent,
+    )
 
     with TestClient(app) as cliente:
         respuesta_salud = cliente.get("/health")
@@ -119,4 +125,8 @@ def test_aplicacion_del_agente_expone_salud_y_sesiones(
     assert respuesta_sesion.status_code == 200
     assert respuesta_sesion.json()["id"] == "sesion-prueba"
     assert root_agent.model == GEMINI_MODEL
-    assert root_agent.tools == [mcp_toolset]
+    assert root_agent.tools == [
+        mcp_toolset,
+        obtener_grafico_ventas,
+        obtener_grafico_hallazgo,
+    ]

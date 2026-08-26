@@ -1,0 +1,22 @@
+validacion,cumple,detalle
+clientes no vacio,True,6500 filas
+compras no vacio,True,6500 filas
+id_cliente unico,True,6500 identificadores unicos
+id_compra unico,True,6500 identificadores unicos
+sin nulos en clientes,True,0 valores nulos
+sin nulos en compras,True,0 valores nulos
+sin compras huerfanas,True,0 huerfanas
+dominio de genero,True,"valores: [0, 1]"
+dominio de metodo_pago,True,"valores: [0, 1, 2]"
+dominio de navegador,True,"valores: [0, 1, 2, 3, 4]"
+fechas del anio 2021,True,2021-01-01 a 2021-12-31
+tipo numerico clientes.edad,True,int64
+tipo numerico clientes.venta_total,True,float64
+tipo numerico clientes.n_compras,True,int64
+tipo numerico compras.monto_compra,True,float64
+tipo numerico compras.tiempo,True,int64
+transaccion de solo lectura,True,transaction_read_only=on
+instantanea consistente,True,transaction_isolation=repeatable read
+conteo de clientes coincide,True,"Pandas=6500, SQL=6500"
+conteo de compras coincide,True,"Pandas=6500, SQL=6500"
+control SQL sin huerfanas,True,0 huerfanas

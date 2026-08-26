@@ -10,6 +10,7 @@ from mcp.server.fastmcp import FastMCP
 
 from app.config import RUTA_ENV, es_host_local
 from app.herramientas.punto_02 import (
+    consultar_distribucion_ventas,
     consultar_estadisticas_basicas,
     consultar_muestra_datos,
     consultar_resumen_datos,
@@ -27,10 +28,12 @@ from app.herramientas.punto_04 import (
 )
 
 from app.herramientas.punto_05 import (
-    consultar_correlacion_venta_edad, 
-    consultar_correlacion_genero_metodo_pago, 
-    consultar_correlacion_boletin_vale, 
+    consultar_correlacion_venta_edad,
+    consultar_correlacion_genero_metodo_pago,
+    consultar_correlacion_boletin_vale,
 )
+
+from app.herramientas.punto_06 import consultar_hallazgos_disponibles
 
 
 load_dotenv(RUTA_ENV)
@@ -76,30 +79,41 @@ def obtener_muestra_datos(
     return consultar_muestra_datos(tabla, limite)
 
 
+# Punto 2.c: distribucion de ventas.
+@mcp.tool()
+def obtener_distribucion_ventas(
+    dimension: Literal["mes", "metodo_pago", "navegador", "boletin", "vale"],
+) -> dict:
+    """Obtiene la distribucion de compras y montos por mes, metodo de pago,
+    navegador, boletin o vale."""
+    return consultar_distribucion_ventas(dimension)
+
+
 # Punto 3: analisis de tendencias.
 @mcp.tool()
 def obtener_ventas_por_mes() -> dict:
     """Determina los meses de 2021 con mayores y menores ventas totales."""
     return consultar_ventas_por_mes()
- 
- 
+
+
 @mcp.tool()
 def obtener_navegador_preferido() -> dict:
     """Identifica el navegador/canal mas preferido y el menos popular."""
     return consultar_navegador_preferido()
- 
- 
+
+
 @mcp.tool()
 def obtener_ventas_efectivo_contra_entrega() -> dict:
     """Identifica el total de ventas pagadas en efectivo o contra entrega."""
     return consultar_ventas_efectivo_contra_entrega()
- 
- 
+
+
 @mcp.tool()
 def obtener_boletines_vales_por_mes() -> dict:
     """Identifica los meses donde se usaron mas boletines y mas vales."""
     return consultar_boletines_vales_por_mes()
- 
+
+
 # Punto 4: segmentacion de clientes.
 @mcp.tool()
 def obtener_segmentacion_edad() -> dict:
@@ -130,6 +144,14 @@ def obtener_correlacion_genero_metodo_pago() -> dict:
 def obtener_correlacion_boletin_vale() -> dict:
     """Investiga si existe correlacion entre el uso de boletin y de vale."""
     return consultar_correlacion_boletin_vale()
+
+
+# Punto 6: visualizacion de datos.
+@mcp.tool()
+def obtener_hallazgos_disponibles() -> dict:
+    """Lista los graficos disponibles que resumen los hallazgos mas importantes
+    del analisis (punto 6)."""
+    return consultar_hallazgos_disponibles()
 
 
 if __name__ == "__main__":
