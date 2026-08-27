@@ -396,6 +396,55 @@ NAVEGADORES = {
 USO_BOOLEANO = {True: "Si", False: "No"}
 
 
+def _anotar_barras(ax, valores: pd.Series, mostrar_porcentaje: bool = True) -> None:
+    """Escribe el valor (y opcionalmente el % del total) encima de cada barra."""
+    total = float(valores.sum())
+    limite_superior = ax.get_ylim()[1] or 1.0
+    for parche, valor in zip(ax.patches, valores):
+        etiqueta = f"{valor:,.0f}"
+        if mostrar_porcentaje and total:
+            etiqueta += f"\n({valor / total:.1%})"
+        ax.text(
+            parche.get_x() + parche.get_width() / 2,
+            parche.get_height() + limite_superior * 0.015,
+            etiqueta,
+            ha="center",
+            va="bottom",
+            fontsize=9,
+        )
+    ax.set_ylim(top=limite_superior * 1.15)
+
+
+def _anotar_puntos(ax, etiquetas_x, valores, mostrar_porcentaje: bool = True) -> None:
+    """Escribe el valor (y opcionalmente el % del total) sobre cada punto de una linea."""
+    total = float(sum(valores))
+    for x, y in zip(etiquetas_x, valores):
+        etiqueta = f"{y:,.0f}"
+        if mostrar_porcentaje and total:
+            etiqueta += f"\n({y / total:.1%})"
+        ax.annotate(
+            etiqueta,
+            (x, y),
+            textcoords="offset points",
+            xytext=(0, 10),
+            ha="center",
+            fontsize=8,
+        )
+
+
+def _agregar_fuente(n_registros: int, unidad: str = "compras") -> None:
+    """Agrega una nota de fuente al pie del grafico con el tamano de la muestra."""
+    plt.figtext(
+        0.01,
+        -0.08,
+        f"Fuente: elaboracion propia con base en las ventas online de 2021 "
+        f"(N = {n_registros:,} {unidad}).",
+        ha="left",
+        fontsize=8,
+        style="italic",
+    )
+
+
 def _graficar_barras(
     resumen: pd.DataFrame,
     x: str,
@@ -407,13 +456,19 @@ def _graficar_barras(
     directorio_resultados: str | Path | None,
     paleta: str = "viridis",
     mostrar: bool = True,
+    mostrar_porcentaje: bool = True,
+    n_registros: int | None = None,
+    unidad_fuente: str = "compras",
 ) -> None:
-    plt.figure(figsize=(9, 5))
-    sns.barplot(data=resumen, x=x, y=y, hue=x, palette=paleta, legend=False)
+    plt.figure(figsize=(9, 5.5))
+    ax = sns.barplot(data=resumen, x=x, y=y, hue=x, palette=paleta, legend=False)
     plt.title(titulo, fontsize=14)
     plt.xlabel(etiqueta_x)
     plt.ylabel(etiqueta_y)
     plt.xticks(rotation=20)
+    _anotar_barras(ax, resumen[y], mostrar_porcentaje=mostrar_porcentaje)
+    if n_registros is not None:
+        _agregar_fuente(n_registros, unidad=unidad_fuente)
     if directorio_resultados is not None:
         directorio_resultados = Path(directorio_resultados)
         directorio_resultados.mkdir(parents=True, exist_ok=True)
@@ -446,14 +501,17 @@ def distribucion_ventas_por_mes(
     resumen["mes_nombre"] = resumen["mes"].map(MESES)
 
     if graficar:
-        plt.figure(figsize=(10, 5))
-        sns.lineplot(
+        plt.figure(figsize=(11, 5.5))
+        ax = sns.lineplot(
             data=resumen, x="mes_nombre", y="monto_total", marker="o", sort=False
         )
         plt.title("Ventas Totales por Mes", fontsize=14)
         plt.xlabel("Mes")
         plt.ylabel("Ventas Totales ($)")
         plt.xticks(rotation=45)
+        _anotar_puntos(ax, resumen["mes_nombre"], resumen["monto_total"])
+        ax.set_ylim(top=resumen["monto_total"].max() * 1.15)
+        _agregar_fuente(len(compras))
         if directorio_resultados is not None:
             directorio_resultados = Path(directorio_resultados)
             directorio_resultados.mkdir(parents=True, exist_ok=True)
@@ -503,6 +561,7 @@ def distribucion_ventas_por_metodo_pago(
             directorio_resultados=directorio_resultados,
             paleta="Set2",
             mostrar=mostrar,
+            n_registros=len(compras),
         )
 
     return resumen
@@ -541,6 +600,7 @@ def distribucion_ventas_por_navegador(
             directorio_resultados=directorio_resultados,
             paleta="magma",
             mostrar=mostrar,
+            n_registros=len(compras),
         )
 
     return resumen
@@ -579,6 +639,7 @@ def distribucion_ventas_por_boletin(
             directorio_resultados=directorio_resultados,
             paleta="crest",
             mostrar=mostrar,
+            n_registros=len(compras),
         )
 
     return resumen
@@ -617,6 +678,7 @@ def distribucion_ventas_por_vale(
             directorio_resultados=directorio_resultados,
             paleta="flare",
             mostrar=mostrar,
+            n_registros=len(compras),
         )
 
     return resumen

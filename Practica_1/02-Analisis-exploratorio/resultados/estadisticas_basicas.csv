@@ -1,0 +1,11 @@
+tabla,variable,unidad,tipo_variable,cantidad,nulos,media,mediana,moda,frecuencia_moda,cantidad_modas
+clientes,edad,anios,cuantitativa,6500,0,36.305231,36.0,18,465,1
+clientes,genero,codigo 0/1,categorica codificada,6500,0,0.481231,0.0,0,3372,1
+clientes,venta_total,moneda,cuantitativa,6500,0,206.242431,137.35,98,12,1
+clientes,n_compras,compras,cuantitativa,6500,0,5.09,4.0,2,1044,1
+compras,monto_compra,moneda,cuantitativa,6500,0,39.787056,35.764,37.145,5,1
+compras,metodo_pago,codigo 0-2,categorica codificada,6500,0,1.039846,1.0,1,3827,1
+compras,tiempo,segundos,cuantitativa,6500,0,767.376154,768.0,852,24,1
+compras,navegador,codigo 0-4,categorica codificada,6500,0,0.882308,0.0,0,3523,1
+compras,boletin,codigo 0/1,categorica codificada,6500,0,0.449385,0.0,0,3579,1
+compras,vale,codigo 0/1,categorica codificada,6500,0,0.192923,0.0,0,5246,1
