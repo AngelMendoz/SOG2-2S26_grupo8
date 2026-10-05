@@ -1,0 +1,117 @@
+// Manual 2 · RPA · Flujo detallado del robot UiPath (Main.xaml, bloques A–J)
+// Generar: dot -Tpng -Gdpi=200 02_flujo_robot_uipath.dot -o 02_flujo_robot_uipath.png
+digraph flujo_robot {
+  graph [rankdir=TB, fontname="Segoe UI", nodesep=0.35, ranksep=0.32, pad=0.3, newrank=true,
+         label="Flujo del robot UiPath «QuetzalMart_RPA_Carga»", labelloc=t, fontsize=18];
+  node  [fontname="Segoe UI", fontsize=10, shape=box, style="rounded,filled", fillcolor="#FFFFFF", color="#5B6B7A"];
+  edge  [fontname="Segoe UI", fontsize=9, color="#5B6B7A"];
+
+  inicio [shape=ellipse, fillcolor="#D9EAD3", label="Inicio"];
+  fin    [shape=ellipse, fillcolor="#D9EAD3", label="Fin"];
+  finErr1 [shape=ellipse, fillcolor="#F4CCCC", label="Fin con error:\nno hay hojas válidas"];
+  finErr2 [shape=ellipse, fillcolor="#F4CCCC", label="Fin con error:\nfalta la credencial"];
+
+  subgraph cluster_A {
+    label="A · Preparar la corrida"; style="rounded,dashed"; color="#4A86C5"; fontsize=11;
+    a1 [label="Crear lote = fecha y hora\n(yyyyMMdd_HHmmss)"];
+    a2 [shape=parallelogram, style=filled, label="Elegir carpeta de entrada\n(Browse for Folder)"];
+    a3 [shape=diamond, label="¿Se canceló\nel diálogo?"];
+    a3b [label="Usar Proyecto\\RPA\\Entrada"];
+    a4 [label="Crear carpeta Salida\\<lote>"];
+  }
+
+  subgraph cluster_BCD {
+    label="B, C y D · Recorrer archivos y hojas"; style="rounded,dashed"; color="#4A86C5"; fontsize=11;
+    b1 [shape=diamond, label="¿Quedan archivos\n.xls / .xlsx?\n(incluye subcarpetas)"];
+    b2 [shape=diamond, label="¿Es temporal\nde Excel (~$)?"];
+    b2w [label="Log: archivo temporal ignorado"];
+    c1 [shape=diamond, label="¿Se pudo abrir\ny leer las hojas?"];
+    c1e [label="Log Error del archivo\n(el robot sigue)"];
+    c2 [shape=diamond, label="¿Quedan hojas\nen el archivo?"];
+    c3 [shape=diamond, label="¿Hoja = «clientes»\no «productos»?"];
+    c3n [label="Log: «Hoja ignorada»"];
+    d1 [label="Leer hoja completa\n(Read Range Workbook)"];
+    d2 [label="Normalizar encabezados\n(Name*, External ID, tildes)\ny agregar al consolidado"];
+  }
+
+  subgraph cluster_EF {
+    label="E y F · Consolidar y preparar la carga"; style="rounded,dashed"; color="#4A86C5"; fontsize=11;
+    e1 [shape=diamond, label="¿Hay clientes\no productos?"];
+    e2 [shape=parallelogram, style=filled, label="Guardar clientes_consolidado.xlsx\ny productos_consolidado.xlsx"];
+    f1 [label="Generar un INSERT por fila\n(comillas escapadas, vacío = NULL)"];
+  }
+
+  subgraph cluster_GH {
+    label="G y H · Cargar en la base centralizada"; style="rounded,dashed"; color="#4A86C5"; fontsize=11;
+    g1 [shape=diamond, label="¿Existe la credencial\nQuetzalMart_BD?"];
+    g2 [label="Conectar a PostgreSQL\npor ODBC (rpa_robot)"];
+    h1 [shape=diamond, label="¿Quedan INSERT\npor ejecutar?"];
+    h2 [label="Run Command: INSERT\ncon estado «Pendiente»"];
+    h3 [shape=diamond, label="¿Falló?"];
+    h4 [label="Contar error\ny seguir"];
+  }
+
+  subgraph cluster_IJ {
+    label="I y J · Verificar y mostrar"; style="rounded,dashed"; color="#4A86C5"; fontsize=11;
+    i1 [label="Esperar 10 s y contar filas\n«Pendiente» del lote"];
+    i2 [shape=diamond, label="¿Pendientes = 0\no 24 intentos (4 min)?"];
+    i3 [label="Consultar resumen por estado\ny desconectar"];
+    i4 [shape=parallelogram, style=filled, label="Guardar resumen.xlsx"];
+    i5 [shape=diamond, label="¿Quedaron\npendientes?"];
+    i6 [label="Log Warn: ejecutar\nRun Manually en Odoo"];
+    j1 [label="Abrir tienda /shop\ny mostrar cuadro con el resumen"];
+  }
+
+  bd [shape=cylinder, fillcolor="#EAF6EC", color="#4CA35A",
+      label="PostgreSQL · dbquetzalmart\nx_rpa_cliente / x_rpa_producto"];
+  odoo [fillcolor="#F3ECF8", color="#8A5BB0",
+        label="Odoo: acción planificada\n(ver diagrama 03)"];
+
+  inicio -> a1 -> a2 -> a3;
+  a3 -> a3b [label="sí"];
+  a3 -> a4 [label="no"];
+  a3b -> a4;
+  a4 -> b1;
+
+  b1 -> b2 [label="sí"];
+  b2 -> b2w [label="sí"];
+  b2w -> b1;
+  b2 -> c1 [label="no"];
+  c1 -> c1e [label="no"];
+  c1e -> b1;
+  c1 -> c2 [label="sí"];
+  c2 -> c3 [label="sí"];
+  c2 -> b1 [label="no"];
+  c3 -> c3n [label="no"];
+  c3n -> c2;
+  c3 -> d1 [label="sí"];
+  d1 -> d2 -> c2;
+
+  b1 -> e1 [label="no"];
+  e1 -> finErr1 [label="no"];
+  e1 -> e2 [label="sí"];
+  e2 -> f1 -> g1;
+  g1 -> finErr2 [label="no"];
+  g1 -> g2 [label="sí"];
+  g2 -> h1;
+  h1 -> h2 [label="sí"];
+  h2 -> h3;
+  h3 -> h4 [label="sí"];
+  h3 -> h1 [label="no"];
+  h4 -> h1;
+  h1 -> i1 [label="no"];
+  i1 -> i2;
+  i2 -> i1 [label="no"];
+  i2 -> i3 [label="sí"];
+  i3 -> i4 -> i5;
+  i5 -> i6 [label="sí"];
+  i5 -> j1 [label="no"];
+  i6 -> j1;
+  j1 -> fin;
+
+  { rank=same; h2; bd; }
+  { rank=same; i2; odoo; }
+  h2 -> bd [style=dashed, label="INSERT"];
+  bd -> odoo [style=dashed, dir=both, label="cada minuto"];
+  bd -> i1 [style=dashed, constraint=false, label="SELECT count(*)"];
+}

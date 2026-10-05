@@ -1,4 +1,4 @@
-# Expresiones del robot (bloques A–G)
+# Expresiones del robot (bloques A–J)
 
 Copiar tal cual en UiPath Studio (VB.NET). Todas van dentro de la secuencia **Robot QuetzalMart**.
 
@@ -53,3 +53,39 @@ Invoke Code «Generar SQL clientes» y «Generar SQL productos»: `02_invoke_cod
 "Driver={PostgreSQL Unicode(x64)};Server=" + hostBD + ";Port=" + puertoBD + ";Database=" + nombreBD + ";Uid=" + usuarioBD + ";Pwd=" + New System.Net.NetworkCredential("", claveBD).Password + ";"
 ```
 - Database connection (Out): `conexion`
+
+## Bloque H · Insertar cada fila
+- For Each `sql` · In: `sqlsClientes.Concat(sqlsProductos).ToList()` · TypeArgument: String
+  - Try: Run Command › Existing connection `conexion` · SQL command `sql` · Command type Text; Assign `filasInsertadas = filasInsertadas + 1`
+  - Catch (System.Exception): Log Error `"Fila no insertada: " + exception.Message`; Assign `erroresInsert = erroresInsert + 1`
+- Log: `"Insertadas " + filasInsertadas.ToString + " filas en la BD (lote " + lote + "), errores: " + erroresInsert.ToString + ". Esperando a Odoo..."`
+
+## Bloque I · Esperar a Odoo (Do While)
+Condition: `pendientes > 0 AndAlso intentos < 24` — dentro del Body, en orden:
+- Delay `00:00:10`
+- Run Query › Existing connection `conexion` › Data table `dtConteo` › SQL:
+```vb
+"SELECT (SELECT count(*) FROM x_rpa_cliente WHERE x_lote = '" + lote + "' AND x_estado = 'Pendiente') + (SELECT count(*) FROM x_rpa_producto WHERE x_lote = '" + lote + "' AND x_estado = 'Pendiente') AS pendientes"
+```
+- Assign `pendientes = Convert.ToInt32(dtConteo.Rows(0)(0))`
+- Assign `intentos = intentos + 1`
+- Log `"Filas pendientes de procesar en Odoo: " + pendientes.ToString`
+
+Después del Do While (mismo nivel):
+- Run Query › `conexion` › Data table `dtResumen` › SQL:
+```vb
+"SELECT 'clientes' AS tabla, x_estado AS estado, count(*) AS filas FROM x_rpa_cliente WHERE x_lote = '" + lote + "' GROUP BY x_estado UNION ALL SELECT 'productos', x_estado, count(*) FROM x_rpa_producto WHERE x_lote = '" + lote + "' GROUP BY x_estado"
+```
+- Disconnect from Database › `conexion`
+- Output Data Table as Text › DataTable `dtResumen` › Text `textoResumen`
+- Write Range Workbook › **File (local path)** (⊕ › Use Local File): `System.IO.Path.Combine(carpetaSalida, "resumen.xlsx")` · `"resumen"` · `"A1"` · `dtResumen`
+- If `pendientes > 0` › Log Warn `"Odoo aún no procesa todo. Abre Settings > Technical > Scheduled Actions > RPA - Procesar cargas pendientes > Run Manually"`
+
+## Bloque J · Resultado
+- Log `"Resumen del lote " + lote + Environment.NewLine + textoResumen`
+- Invoke Code «Abrir tienda»: `04_invoke_code_abrir_tienda.vb` (argumento `in_url` = `urlTienda`)
+- Message Box › Text `"Carga terminada (lote " + lote + ")" + Environment.NewLine + textoResumen`
+
+## Nota sobre los campos File
+- Leer (Get Sheets, Read Range): `LocalResource.FromPath(CurrentFile.FullName)` funciona porque el archivo existe.
+- Escribir (Write Range): usar ⊕ › **Use Local File** → «File (local path)», porque el consolidado todavía no existe.

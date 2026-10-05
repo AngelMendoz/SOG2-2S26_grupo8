@@ -1,0 +1,55 @@
+// Manual 2 · RPA · Vista general (quién hace qué)
+// Generar: dot -Tpng -Gdpi=200 01_vista_general.dot -o 01_vista_general.png
+digraph vista_general {
+  graph [rankdir=LR, fontname="Segoe UI", fontsize=13, nodesep=0.4, ranksep=0.55, pad=0.3,
+         label="RPA QuetzalMart · vista general del proceso", labelloc=t, fontsize=18];
+  node  [fontname="Segoe UI", fontsize=11, shape=box, style="rounded,filled", fillcolor="#FFFFFF", color="#5B6B7A"];
+  edge  [fontname="Segoe UI", fontsize=10, color="#5B6B7A"];
+
+  subgraph cluster_entrada {
+    label="1 · Carpeta de entrada"; style="rounded,filled"; fillcolor="#FFF7E0"; color="#E0B84C";
+    carpeta [shape=folder, label="clientes - …\nproductos - …\nproveedores - …\nreclamos - …\nregistro - …"];
+    excel   [shape=note, label="Excel (.xls / .xlsx)\ncon varias hojas"];
+    carpeta -> excel;
+  }
+
+  subgraph cluster_robot {
+    label="2 · Robot UiPath (PC del operador)"; style="rounded,filled"; fillcolor="#E8F1FB"; color="#4A86C5";
+    filtrar     [label="Toma solo las hojas\n«clientes» y «productos»"];
+    normalizar  [label="Normaliza encabezados\ny consolida"];
+    consolidado [shape=note, label="Salida\\<lote>\nclientes_consolidado.xlsx\nproductos_consolidado.xlsx"];
+    insertar    [label="INSERT de cada fila\n(estado «Pendiente»)"];
+    verificar   [label="Espera y verifica por SQL;\nabre la tienda /shop"];
+    filtrar -> normalizar -> consolidado;
+    normalizar -> insertar -> verificar;
+  }
+
+  subgraph cluster_bd {
+    label="3 · PostgreSQL en AWS (dbquetzalmart)"; style="rounded,filled"; fillcolor="#EAF6EC"; color="#4CA35A";
+    tablas [shape=cylinder, label="Tablas centralizadas\nx_rpa_cliente\nx_rpa_producto"];
+  }
+
+  subgraph cluster_odoo {
+    label="4 · Odoo 19 (acción planificada cada minuto)"; style="rounded,filled"; fillcolor="#F3ECF8"; color="#8A5BB0";
+    procesar  [label="RPA - Procesar\ncargas pendientes"];
+    contactos [label="Contactos\n(res.partner)"];
+    productos [label="Productos publicados\ncon existencias"];
+    procesar -> contactos;
+    procesar -> productos;
+  }
+
+  subgraph cluster_ver {
+    label="5 · Visualización"; style="rounded,filled"; fillcolor="#F2F2F2"; color="#888888";
+    web [label="Sitio web /shop\ncategoría «Cargados por RPA»"];
+    sql [label="Consultas SQL\n(05_consultas_rpa_calificacion.sql)"];
+  }
+
+  excel -> filtrar;
+  insertar -> tablas [label="ODBC\nusuario rpa_robot"];
+  tablas -> procesar [label="filas Pendiente"];
+  procesar -> tablas [label="Procesado / Error /\nOmitido + mensaje", style=dashed];
+  tablas -> verificar [style=dashed, label="conteo y resumen"];
+  productos -> web;
+  tablas -> sql;
+  contactos -> sql [style=dashed];
+}
