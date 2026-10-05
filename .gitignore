@@ -185,3 +185,7 @@ pyrightconfig.json
 Guia_RPA_UiPath_QuetzalMart.html
 # Salidas de cada corrida del robot RPA (se regeneran)
 Proyecto/RPA/Salida/
+
+# Cache local de UiPath Studio
+Proyecto/RPA/QuetzalMart_RPA_Carga/.local/
+Proyecto/RPA/QuetzalMart_RPA_Carga/~*.xaml
