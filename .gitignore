@@ -189,3 +189,7 @@ Proyecto/RPA/Salida/
 # Cache local de UiPath Studio
 Proyecto/RPA/QuetzalMart_RPA_Carga/.local/
 Proyecto/RPA/QuetzalMart_RPA_Carga/~*.xaml
+
+# Notas personales (no se suben)
+Proyecto/RPA/ESTADO_RPA.md
+Proyecto/Enunciado/distribucion_tareas_grupo.png

@@ -1,10 +1,10 @@
 ' === QuetzalMart RPA · Normalizar una hoja "clientes" o "productos" ===
 ' Copia las filas de in_dtHoja al consolidado que corresponde, usando los
-' encabezados oficiales del enunciado (acepta "Name*", "External ID", tildes, etc.)
+' encabezados de los Excel de ejemplo (acepta "Name*", "ID Externo", tildes, etc.)
 Dim columnasClientes As String() = {"Name", "Company Type", "Related Company", "Email", "Phone", "Street", "Street2", "City", "State", "Zip", "Country", "Tax ID", "Website", "Tags", "Reference", "Notes"}
-Dim columnasProductos As String() = {"ID Externo", "Name", "Product Type", "Internal Reference", "Barcode", "Sales Price", "Cost", "Weight", "Sales Description", "Product Values", "Cantidad a la mano", "Está publicado"}
+Dim columnasProductos As String() = {"External ID", "Name", "Product Type", "Internal Reference", "Barcode", "Sales Price", "Cost", "Weight", "Sales Description", "Product Values", "Cantidad a la mano", "Está publicado"}
 Dim sinonimos As New Dictionary(Of String, String) From {
-    {"external id", "id externo"}, {"published", "esta publicado"}, {"is published", "esta publicado"},
+    {"id externo", "external id"}, {"published", "esta publicado"}, {"is published", "esta publicado"},
     {"quantity on hand", "cantidad a la mano"}, {"on hand", "cantidad a la mano"}}
 
 Dim normalizar As Func(Of String, String) = Function(texto As String)

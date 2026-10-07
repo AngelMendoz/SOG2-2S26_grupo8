@@ -13,7 +13,7 @@ If in_tipo = "clientes" Then
 Else
     tabla = "x_rpa_producto"
     mapa = New Dictionary(Of String, String) From {
-        {"ID Externo", "x_id_externo"}, {"Name", "x_name"}, {"Product Type", "x_product_type"},
+        {"External ID", "x_id_externo"}, {"Name", "x_name"}, {"Product Type", "x_product_type"},
         {"Internal Reference", "x_internal_reference"}, {"Barcode", "x_barcode"}, {"Sales Price", "x_sales_price"},
         {"Cost", "x_cost"}, {"Weight", "x_weight"}, {"Sales Description", "x_sales_description"},
         {"Product Values", "x_product_values"}, {"Cantidad a la mano", "x_cantidad_a_la_mano"},

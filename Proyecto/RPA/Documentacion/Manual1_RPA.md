@@ -139,9 +139,11 @@ El RPA recorre toda la estructura, extrae solo esas hojas, las consolida y las c
 
 | Clientes (hoja `clientes`) | Productos (hoja `productos`) |
 |---|---|
-| Name, Company Type, Related Company, Email, Phone, Street, Street2, City, State, Zip, Country, Tax ID, Website, Tags, Reference, Notes | ID Externo, Name, Product Type, Internal Reference, Barcode, Sales Price, Cost, Weight, Sales Description, Product Values, Cantidad a la mano, Está publicado |
+| Name, Company Type, Related Company, Email, Phone, Street, Street2, City, State, Zip, Country, Tax ID, Website, Tags, Reference, Notes | External ID, Name, Product Type, Internal Reference, Barcode, Sales Price, Cost, Weight, Sales Description, Product Values, Cantidad a la mano, Está publicado |
 
-Obligatorios (según el auxiliar, foro del 26/09): en clientes **Name** y **Company Type**; en productos **ID Externo**, **Name** y **Product Type**. El robot acepta variantes en los encabezados de los Excel del catedrático (`Name*`, `Company Type*`, `External ID`, tildes) y lee `.xls` y `.xlsx`.
+Los encabezados son los de los Excel de ejemplo del catedrático. El enunciado dice «ID Externo», pero el auxiliar aclaró (foro, 06/10) que la columna se llama **External ID**. El robot acepta los dos nombres y otras variantes (`Name*`, `Company Type*`, tildes, mayúsculas) y lee `.xls` y `.xlsx`.
+
+Obligatorios (según el auxiliar, foro del 26/09): en clientes **Name** y **Company Type**; en productos **External ID**, **Name** y **Product Type**. Las demás columnas pueden venir vacías. **Product Values** siempre vendrá vacía en la calificación (auxiliar, foro del 06/10), porque requiere configurar atributos de variantes que el enunciado no pide.
 
 ### 2.4 Ciclo de una ejecución
 
@@ -152,7 +154,7 @@ Obligatorios (según el auxiliar, foro del 26/09): en clientes **Name** y **Comp
 5. Se conecta a PostgreSQL con la credencial de Windows e inserta cada fila con estado **Pendiente**. Una fila que falla no detiene a las demás.
 6. La acción planificada de Odoo procesa las filas pendientes:
    - **Clientes:** empresa o persona, país y departamento, empresa relacionada y etiquetas. Si el contacto ya existe (misma Reference, Email o Name) lo actualiza en vez de duplicarlo. El Tax ID (NIT) se guarda en la empresa dueña del contacto.
-   - **Productos:** Goods se crea como almacenable y Service como servicio. Se cargan precio, costo, peso y descripciones; se publica en la tienda (categoría «Cargados por RPA») si *Está publicado* es verdadero, y se ajusta el inventario a la *Cantidad a la mano* exacta. Usa el ID Externo para no duplicar.
+   - **Productos:** Goods se crea como almacenable y Service como servicio. Se cargan precio, costo, peso y descripciones; se publica en la tienda (categoría «Cargados por RPA») si *Está publicado* es verdadero, y se ajusta el inventario a la *Cantidad a la mano* exacta. Usa el External ID para no duplicar.
    - Cada fila queda en **Procesado**, **Omitido** (falta un dato obligatorio) o **Error**, con el motivo en *Mensaje*.
 7. El robot consulta cada 10 segundos (hasta 4 minutos) cuántas filas del lote siguen pendientes. Cuando llegan a 0 guarda `resumen.xlsx`, abre la tienda `/shop` y muestra un cuadro con el resumen.
 

@@ -129,7 +129,7 @@ for fila in env['x_rpa_producto'].sudo().search([('x_estado', '=', 'Pendiente')]
     try:
         nombre = texto(fila.x_name)
         # Obligatorios según el auxiliar (foro, 26/09): External ID, Name y Product Type
-        faltan = [etiqueta for etiqueta, valor in (('ID Externo', texto(fila.x_id_externo)), ('Name', nombre), ('Product Type', texto(fila.x_product_type))) if not valor]
+        faltan = [etiqueta for etiqueta, valor in (('External ID', texto(fila.x_id_externo)), ('Name', nombre), ('Product Type', texto(fila.x_product_type))) if not valor]
         if faltan:
             fila.write({'x_estado': 'Omitido', 'x_mensaje': 'Falta dato obligatorio: ' + ', '.join(faltan)})
             continue
@@ -159,7 +159,7 @@ for fila in env['x_rpa_producto'].sudo().search([('x_estado', '=', 'Pendiente')]
                 valores['description_ecommerce'] = texto(fila.x_product_values)
             else:
                 valores['description'] = texto(fila.x_product_values)
-        # Buscar si ya existe: primero por ID Externo, luego por Internal Reference
+        # Buscar si ya existe: primero por External ID, luego por Internal Reference
         id_externo = texto(fila.x_id_externo)
         nombre_xml = ''
         enlace = DatosXml

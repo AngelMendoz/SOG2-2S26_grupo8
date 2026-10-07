@@ -1,11 +1,9 @@
 # Proyecto QuetzalMart · SOG2 2S2026
 
-- `Enunciado/`: PDF del proyecto y distribución de tareas del grupo.
+- `Enunciado/`: PDF del proyecto.
 - `RPA/`: robot de UiPath que carga las hojas `clientes` y `productos` en la base de Odoo (parte de Angel).
 
 ## RPA
-
-Estado, requisitos cumplidos y pendientes de documentación: [`RPA/ESTADO_RPA.md`](RPA/ESTADO_RPA.md).
 
 | Carpeta | Contenido |
 |---|---|
