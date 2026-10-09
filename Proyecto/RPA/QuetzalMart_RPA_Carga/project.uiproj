@@ -1,0 +1,6 @@
+{
+  "Name": "QuetzalMart_RPA_Carga",
+  "ProjectType": "Process",
+  "Description": "Blank Process",
+  "MainFile": "Main.xaml"
+}
