@@ -8,7 +8,7 @@
 | Carpeta | Contenido |
 |---|---|
 | `RPA/01-Odoo/` | Server Action (crear tablas) y Scheduled Action (procesar cargas) |
-| `RPA/02-PostgreSQL/` | Usuario `rpa_robot`, pruebas de permisos y puerto, consultas para la calificación, driver ODBC |
+| `RPA/02-PostgreSQL/` | Usuario `rpa_robot`, pruebas de permisos y puerto, consultas de verificación, driver ODBC |
 | `RPA/03-Carpeta-prueba/` | Script que genera `RPA/Entrada/` |
 | `RPA/04-UiPath/` | Código de los Invoke Code y expresiones de los bloques A–J |
 | `RPA/QuetzalMart_RPA_Carga/` | Proyecto de UiPath Studio (abrir `project.json`) |

@@ -16,7 +16,7 @@ Proyecto QuetzalMart · SOG2 · Segundo semestre 2026
 | Driver ODBC de PostgreSQL | PC del operador | psqlODBC x64 (`PostgreSQL Unicode(x64)`) |
 | Proyecto del robot | Repositorio, `Proyecto/RPA/QuetzalMart_RPA_Carga` | — |
 
-Odoo y PostgreSQL ya están instalados en la nube (ver la sección de instalación del ERP). Para el RPA, en el servidor solo se agregan dos tablas, una acción planificada y un usuario de base de datos; eso se hace **una sola vez** y se detalla en la [sección 4.1](#41-configuración-en-odoo-y-postgresql-una-sola-vez). En cada PC donde se quiera ejecutar el robot se siguen los pasos 1.2 a 1.7.
+Odoo y PostgreSQL ya están instalados en la nube. Para el RPA, en el servidor solo se agregan dos tablas, una acción planificada y un usuario de base de datos; eso se hace **una sola vez** y se detalla en la [sección 4.1](#41-configuración-en-odoo-y-postgresql-una-sola-vez). En cada PC donde se quiera ejecutar el robot se siguen los pasos 1.2 a 1.7.
 
 ### 1.2 Obtener el proyecto
 
@@ -40,8 +40,6 @@ El robot calcula sus rutas desde su propia ubicación (`..\Entrada` y `..\Salida
 ![Productos del instalador](../Capturas/09a1_uipath_instalador_productos.png)
 
 4. Esperar a que diga *Descarga completa* e *Instalación completa* y pulsar **Cerrar**.
-
-![Instalación completa](../Capturas/09a2_uipath_instalacion_completa.png)
 
 5. Abrir UiPath Studio, iniciar sesión con la misma cuenta y elegir el perfil **UiPath Studio** (no StudioX).
 6. Dejar Studio en inglés: **Home › Settings › General › Language › English**.
@@ -90,26 +88,22 @@ La contraseña de la base de datos no se escribe en el flujo ni en el repositori
 ### 1.7 Abrir el proyecto y validar
 
 1. Studio › **Open** › `Proyecto\RPA\QuetzalMart_RPA_Carga\project.json`.
-2. La primera vez Studio descarga los paquetes `UiPath.Excel.Activities`, `UiPath.Database.Activities` y `UiPath.Credentials.Activities` (necesita internet). Quedan en **Dependencias** junto con `UiPath.System.Activities`, que trae todo proyecto.
+2. La primera vez Studio descarga los paquetes `UiPath.Excel.Activities`, `UiPath.Database.Activities` y `UiPath.Credentials.Activities`. Quedan en **Dependencias** junto con `UiPath.System.Activities`, que trae todo proyecto.
 3. **Design › Analyze File › Validate File**: debe terminar sin errores.
 
 ![Paquetes del proyecto](../Capturas/09b_uipath_paquetes_instalados.png)
 
-4. Ejecutar el robot (**Run File**) con la carpeta `Entrada` de la sección 1.8. El panel Output debe terminar con 0 filas pendientes y el mensaje final debe mostrar las filas en estado *Procesado*.
-
-![Output de la verificación](../Capturas/09f_verificacion_output_ejecucion.png)
-
-![Mensaje de la verificación](../Capturas/09g_verificacion_message_box.png)
+4. Ejecutar el robot (**Run File**) con la carpeta `Entrada` de la sección 1.8. El panel Output debe terminar con 0 filas pendientes y el mensaje final debe mostrar las filas en estado *Procesado* (ver sección 4.4).
 
 ### 1.8 Carpeta de entrada de prueba
 
-El repositorio ya incluye `Proyecto/RPA/Entrada/` con la jerarquía del enunciado. Para regenerarla (requiere Python con `openpyxl`):
+El repositorio ya incluye `Proyecto/RPA/Entrada/` con una estructura de carpetas de prueba. Para regenerarla (requiere Python con `openpyxl`):
 
 ```powershell
 python "Proyecto\RPA\03-Carpeta-prueba\crear_carpeta_prueba.py"
 ```
 
-Crea 7 Excel en carpetas como `clientes - region central`, `productos - bodega principal`, `proveedores - locales`, `reclamos - septiembre` y `registro - ventas`, con hojas que deben ignorarse (`reclamos`, `notas`, `registros`, `proveedor`) y hojas `clientes`/`productos` incluso dentro de carpetas con otro nombre. También copia los dos Excel de ejemplo del catedrático a `Entrada\ejemplos - catedra\`.
+Crea 7 Excel en carpetas como `clientes - region central`, `productos - bodega principal`, `proveedores - locales`, `reclamos - septiembre` y `registro - ventas`, con hojas que deben ignorarse (`reclamos`, `notas`, `registros`, `proveedor`) y hojas `clientes`/`productos` incluso dentro de carpetas con otro nombre. También copia los dos Excel de ejemplo a `Entrada\ejemplos - catedra\`.
 
 ---
 
@@ -128,7 +122,7 @@ El RPA recorre toda la estructura, extrae solo esas hojas, las consolida y las c
 | Componente | Función |
 |---|---|
 | **Robot UiPath** `QuetzalMart_RPA_Carga` | Lee la carpeta, filtra las hojas, normaliza encabezados, guarda los consolidados en Excel e inserta cada fila en la base de datos. Al final verifica por SQL y abre la tienda. |
-| **Tablas centralizadas** `x_rpa_cliente` y `x_rpa_producto` | Viven en la base PostgreSQL de Odoo (`dbquetzalmart`). Tienen una columna por cada campo del enunciado más `x_archivo_origen`, `x_lote`, `x_estado`, `x_mensaje` y `x_registro_odoo`. |
+| **Tablas centralizadas** `x_rpa_cliente` y `x_rpa_producto` | Viven en la base PostgreSQL de Odoo (`dbquetzalmart`). Tienen una columna por cada campo más `x_archivo_origen`, `x_lote`, `x_estado`, `x_mensaje` y `x_registro_odoo`. |
 | **Menú «Cargas RPA»** en Odoo | Muestra las filas cargadas (*Clientes cargados*, *Productos cargados*) con su estado y mensaje. |
 | **Acción planificada** «RPA - Procesar cargas pendientes» | Se ejecuta cada minuto en Odoo. Convierte cada fila pendiente en un contacto o en un producto publicado con existencias. |
 | **Usuario de base de datos** `rpa_robot` | Solo puede leer e insertar en las dos tablas del RPA. No tiene acceso a ninguna tabla de Odoo. |
@@ -165,9 +159,9 @@ Si el robot se ejecuta otra vez con la misma carpeta, se crea un lote nuevo, per
 | Archivos | `Proyecto\RPA\Salida\<lote>\` (consolidados y resumen) |
 | Odoo | *Cargas RPA › Clientes cargados / Productos cargados*, *Contacts*, *Inventory › Products* |
 | Sitio web | `/shop` › categoría **Cargados por RPA** |
-| Base de datos | `02-PostgreSQL/05_consultas_rpa_calificacion.sql` (con el usuario `odoo`) |
+| Base de datos | `02-PostgreSQL/05_consultas_rpa.sql` (con el usuario `odoo`) |
 
-Consultas preparadas para la calificación:
+Consultas:
 
 1. Resumen de cada ejecución (lote, tabla, estado, filas).
 2. Clientes de la última corrida y el contacto creado en Odoo (`res_partner`).
@@ -186,21 +180,17 @@ La solución tiene dos partes: la configuración del servidor (Odoo y PostgreSQL
 
 ![Server Action](../Capturas/01_server_action_crear_tablas.webp)
 
-Odoo crea los modelos `x_rpa_cliente` y `x_rpa_producto` (tablas en PostgreSQL) con un campo por cada columna del enunciado:
+Odoo crea los modelos `x_rpa_cliente` y `x_rpa_producto` (tablas en PostgreSQL). Abajo se ven los campos de clientes; los de productos se crean de la misma forma:
 
 ![Modelos creados](../Capturas/02_modelos_x_rpa_creados.webp)
 
 ![Campos de clientes](../Capturas/03_campos_x_rpa_cliente.png)
-
-![Campos de productos](../Capturas/04_campos_x_rpa_producto.png)
 
 También crea el menú **Cargas RPA** con *Clientes cargados* y *Productos cargados*:
 
 ![Menú Cargas RPA](../Capturas/05_menu_cargas_rpa_con_accion.png)
 
 **Paso 2 · Acción planificada.** En *Settings › Technical › Automation › Scheduled Actions* se crea **RPA - Procesar cargas pendientes**, modelo *Carga RPA - Clientes*, cada **1 minuto**, tipo *Execute Code*, con el código de `01-Odoo/02_scheduled_action_procesar_cargas.py`, y se deja **Active**.
-
-![Scheduled Action](../Capturas/05b_scheduled_action_procesar_cargas.webp)
 
 ![Cada 1 minuto y activa](../Capturas/05c_scheduled_action_cada_minuto_activa.png)
 
@@ -218,9 +208,7 @@ GRANT USAGE ON SEQUENCE x_rpa_cliente_id_seq, x_rpa_producto_id_seq TO rpa_robot
 
 ![Crear usuario rpa_robot](../Capturas/06_crear_usuario_rpa_robot.png)
 
-Prueba de seguridad (`02-PostgreSQL/02_prueba_permisos_robot.sql`): conectado como `rpa_robot`, puede leer su tabla, pero al intentar leer `res_partner` PostgreSQL responde *permission denied*.
-
-![rpa_robot lee x_rpa_cliente](../Capturas/07_rpa_robot_lee_x_rpa_cliente.png)
+Prueba de seguridad (`02-PostgreSQL/02_prueba_permisos_robot.sql`): conectado como `rpa_robot`, puede leer `x_rpa_cliente`, pero al intentar leer `res_partner` PostgreSQL responde *permission denied*.
 
 ![rpa_robot sin permiso en res_partner](../Capturas/08_rpa_robot_sin_permiso_res_partner.png)
 
@@ -238,15 +226,9 @@ Proyecto **Process** llamado `QuetzalMart_RPA_Carga` (Windows, VB). Todo el fluj
 
 **Bloque A · Preparar la corrida.** Registra el inicio, crea el lote con la fecha y hora, deja elegir la carpeta de entrada (*Browse for Folder*; si se cancela usa `..\Entrada`) y crea `Salida\<lote>`.
 
-![Bloque A](../Capturas/10_uipath_bloque_A_preparar_corrida.png)
-
 ![Bloque A terminado](../Capturas/11_uipath_bloque_A_final.png)
 
-![Browse for Folder](../Capturas/13_uipath_browse_for_folder_salida.png)
-
 **Bloque B · Recorrer todos los Excel.** *For Each File in Folder* sobre la carpeta de entrada, con *Include subfolders* y filtro `*.xls*`. Ignora los temporales `~$` y protege cada archivo con un *Try Catch* para que un Excel dañado no detenga al robot.
-
-![For Each File in Folder](../Capturas/14_uipath_bloque_B_for_each_propiedades.png)
 
 ![If y Try Catch](../Capturas/15_uipath_bloque_B_if_try_catch.png)
 
@@ -254,13 +236,9 @@ Proyecto **Process** llamado `QuetzalMart_RPA_Carga` (Windows, VB). Todo el fluj
 
 ![Bloque C](../Capturas/16_uipath_bloque_C_hojas.png)
 
-**Bloque D · Leer y normalizar.** *Read Range Workbook* lee la hoja completa y el *Invoke Code* «Normalizar hoja» (`01_invoke_code_normalizar_hoja.vb`) pasa las filas al consolidado con los encabezados oficiales del enunciado.
-
-![Argumentos de Normalizar hoja](../Capturas/17_uipath_bloque_D_argumentos_normalizar.png)
+**Bloque D · Leer y normalizar.** *Read Range Workbook* lee la hoja completa y el *Invoke Code* «Normalizar hoja» (`01_invoke_code_normalizar_hoja.vb`) pasa las filas al consolidado con los encabezados correctos.
 
 ![Leer y normalizar](../Capturas/18_uipath_bloque_D_leer_normalizar.png)
-
-![Logs y Catch](../Capturas/19_uipath_bloque_D_logs_catch.png)
 
 **Bloque E · Consolidado.** Fuera del recorrido: registra cuántos clientes y productos se encontraron, se detiene con un error claro si no hay ninguno y guarda `clientes_consolidado.xlsx` y `productos_consolidado.xlsx` con *Write Range Workbook* (opción *Use Local File* para que cree el archivo).
 
@@ -268,25 +246,15 @@ Proyecto **Process** llamado `QuetzalMart_RPA_Carga` (Windows, VB). Todo el fluj
 
 ![Write Range clientes](../Capturas/21_uipath_bloque_E_write_clientes.png)
 
-![Write Range productos](../Capturas/22_uipath_bloque_E_write_productos.png)
-
-![Use Local File](../Capturas/41a_uipath_write_range_use_local_file.png)
-
-![File (local path)](../Capturas/41_uipath_write_range_file_local_path.png)
-
 **Bloque F · Generar los INSERT.** El *Invoke Code* «Generar SQL» (`02_invoke_code_generar_sql.vb`) crea un `INSERT` por fila. Cada valor va entre comillas simples con las comillas internas duplicadas, y las celdas vacías se guardan como `NULL`.
 
 ![Generar SQL](../Capturas/23_uipath_bloque_F_generar_sql.png)
 
 ![Argumentos clientes](../Capturas/24_uipath_bloque_F_argumentos_clientes.png)
 
-![Argumentos productos](../Capturas/25_uipath_bloque_F_argumentos_productos.png)
-
 **Bloque G · Conexión segura.** *Get Secure Credential* lee `QuetzalMart_BD` del Administrador de credenciales y *Connect to Database* abre la conexión ODBC (`System.Data.Odbc`, driver `PostgreSQL Unicode(x64)`).
 
 ![Get Secure Credential](../Capturas/26_uipath_bloque_G_credencial.png)
-
-![Salidas de la credencial](../Capturas/26b_uipath_bloque_G_credencial_salidas.png)
 
 ![Connect to Database](../Capturas/27_uipath_bloque_G_conexion.png)
 
@@ -296,25 +264,15 @@ Proyecto **Process** llamado `QuetzalMart_RPA_Carga` (Windows, VB). Todo el fluj
 
 ![Try de inserción](../Capturas/29_uipath_bloque_H_insertar_try.png)
 
-![Catch](../Capturas/30_uipath_bloque_H_catch_log.png)
-
 ![Run Command](../Capturas/31_uipath_bloque_H_run_command_propiedades.png)
 
 **Bloque I · Esperar a Odoo y verificar por SQL.** *Do While* que cada 10 segundos (máximo 24 veces) cuenta las filas pendientes del lote con *Run Query*. Después consulta el resumen por estado, lo guarda en `resumen.xlsx` y se desconecta.
 
 ![Do While y Run Query](../Capturas/33_uipath_bloque_I_do_while_run_query.png)
 
-![Output Data Table](../Capturas/34_uipath_bloque_I_output_data_table.png)
-
-![Write Range resumen](../Capturas/35_uipath_bloque_I_write_resumen.png)
-
 ![Estructura bloque I](../Capturas/36_uipath_bloque_I_estructura.png)
 
 **Bloque J · Mostrar el resultado.** Registra el resumen, abre la tienda con el *Invoke Code* «Abrir tienda» (`04_invoke_code_abrir_tienda.vb`) y muestra un *Message Box*.
-
-![Abrir tienda](../Capturas/37_uipath_bloque_J_abrir_tienda.png)
-
-![Argumentos Abrir tienda](../Capturas/38_uipath_bloque_J_abrir_tienda_argumentos.png)
 
 ![Bloque J](../Capturas/39_uipath_bloque_J_resultado.png)
 
@@ -325,8 +283,6 @@ El diagrama completo del flujo está en el Manual 2 (`Documentacion/Manual2_RPA.
 **Ejecutar.** Antes, abrir Odoo en el navegador e iniciar sesión (así se activan las acciones planificadas). En Studio: **Debug File › Run File** y elegir la carpeta de entrada.
 
 ![Run File](../Capturas/39b_uipath_ejecutar_run_file.png)
-
-![Elegir carpeta](../Capturas/40_ejecucion_elegir_carpeta_entrada.png)
 
 **Panel Output.** Muestra qué hojas toma y cuáles ignora. Con la carpeta de prueba: 10 clientes y 13 productos consolidados, 23 filas insertadas sin errores y 0 pendientes al final (1 minuto 11 segundos).
 
@@ -346,11 +302,9 @@ El diagrama completo del flujo está en el Manual 2 (`Documentacion/Manual2_RPA.
 
 ![Existencias](../Capturas/47_odoo_inventario_on_hand.webp)
 
-![Tienda](../Capturas/48_odoo_tienda_categoria_cargados_por_rpa.webp)
-
 ![Tienda filtrada](../Capturas/48b_tienda_filtrada_cargados_por_rpa.png)
 
-**En la base de datos (nivel SQL).** Consultas de `05_consultas_rpa_calificacion.sql` con el usuario `odoo`:
+**En la base de datos (nivel SQL).** Consultas de `05_consultas_rpa.sql` con el usuario `odoo`:
 
 ![Resumen por lote](../Capturas/49_sql_resumen_por_lote.png)
 
@@ -361,10 +315,6 @@ El diagrama completo del flujo está en el Manual 2 (`Documentacion/Manual2_RPA.
 ![Segunda ejecución](../Capturas/51_segunda_ejecucion_output.png)
 
 ![Clientes actualizados](../Capturas/52_segunda_ejecucion_clientes_actualizado.webp)
-
-![Productos actualizados](../Capturas/53_segunda_ejecucion_productos_actualizado.webp)
-
-![Inventario sin duplicados](../Capturas/54_segunda_ejecucion_inventario_sin_duplicados.webp)
 
 ![Contactos sin duplicados](../Capturas/55_segunda_ejecucion_contactos_sin_duplicados.webp)
 
