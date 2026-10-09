@@ -1,16 +1,6 @@
 # Manual 1 · Parte RPA (UiPath)
 
-Proyecto QuetzalMart · SOG2 · Segundo semestre 2026 · Responsable: Angel
-
-Este texto se integra al Manual 1 del grupo en tres lugares:
-
-| Sección del Manual 1 | Qué aporta esta parte |
-|---|---|
-| 1ra · Instalación | [1. Instalación del robot RPA](#1-instalación-del-robot-rpa) |
-| 2da · Funcionamiento de cada módulo | [2. Funcionamiento del módulo RPA](#2-funcionamiento-del-módulo-rpa) |
-| 4ta · RPA paso a paso y ventajas | [4. Construcción del RPA paso a paso](#4-construcción-del-rpa-paso-a-paso) y [Ventajas](#45-ventajas-de-implementar-el-rpa) |
-
-Las capturas están en `Proyecto/RPA/Capturas/`. Las marcadas como **📸 Pendiente** todavía no existen: al tomarlas, guárdalas con el nombre indicado y aparecerán solas en este documento.
+Proyecto QuetzalMart · SOG2 · Segundo semestre 2026
 
 ---
 
@@ -41,13 +31,20 @@ El robot calcula sus rutas desde su propia ubicación (`..\Entrada` y `..\Salida
 ### 1.3 Instalar UiPath Studio
 
 1. Entrar a <https://cloud.uipath.com> y registrarse (se puede usar la cuenta de Google). Se crea una organización de Automation Cloud con licencia Community.
-2. En la página de inicio pulsar **Download Studio** y ejecutar el instalador `.msi` con las opciones por defecto.
-3. Abrir UiPath Studio, iniciar sesión con la misma cuenta y elegir el perfil **UiPath Studio** (no StudioX).
-4. Dejar Studio en inglés: **Home › Settings › General › Language › English**.
+2. En **Downloads › Studio, Assistant and Robot › Community Edition** pulsar **Download** y ejecutar el instalador `UiPathPlatform.msi`.
 
-> **📸 Pendiente:** `09a_uipath_studio_instalado.png` (Studio abierto después de iniciar sesión).
+![Descargar Studio](../Capturas/09a_uipath_descargar_studio.png)
 
-![Studio instalado](../Capturas/09a_uipath_studio_instalado.png)
+3. En el instalador dejar marcados **Studio**, **Assistant**, **Robot** y **Extensiones**, aceptar el acuerdo de licencia y pulsar **Instalar**.
+
+![Productos del instalador](../Capturas/09a1_uipath_instalador_productos.png)
+
+4. Esperar a que diga *Descarga completa* e *Instalación completa* y pulsar **Cerrar**.
+
+![Instalación completa](../Capturas/09a2_uipath_instalacion_completa.png)
+
+5. Abrir UiPath Studio, iniciar sesión con la misma cuenta y elegir el perfil **UiPath Studio** (no StudioX).
+6. Dejar Studio en inglés: **Home › Settings › General › Language › English**.
 
 ### 1.4 Instalar el driver ODBC de PostgreSQL
 
@@ -70,9 +67,9 @@ Test-NetConnection 3.133.123.138 -Port 5432 | Select-Object ComputerName, Remote
 
 Debe decir `TcpTestSucceeded : True`. Si dice `False`, hay que agregar la IP pública de esa red al grupo de seguridad de la instancia en AWS (regla de entrada PostgreSQL, puerto 5432).
 
-Prueba opcional: **Orígenes de datos ODBC (64 bits) › DSN de usuario › Agregar › PostgreSQL Unicode(x64)**, con servidor `3.133.123.138`, puerto `5432`, base `dbquetzalmart`, usuario `rpa_robot` y su contraseña. El botón **Test** debe decir *Connection successful* (después se cancela; el robot no usa el DSN).
+![Test-NetConnection puerto 5432](../Capturas/09e_test_netconnection_puerto_5432.png)
 
-> **📸 Pendiente:** `09d_odbc_test_conexion.png` (ventana del Test con *Connection successful*).
+Prueba opcional: **Orígenes de datos ODBC (64 bits) › DSN de usuario › Agregar › PostgreSQL Unicode(x64)**, con servidor `3.133.123.138`, puerto `5432`, base `dbquetzalmart`, usuario `rpa_robot` y su contraseña. El botón **Test** debe decir *Connection successful* (después se cancela; el robot no usa el DSN).
 
 ![Test ODBC](../Capturas/09d_odbc_test_conexion.png)
 
@@ -88,19 +85,21 @@ La contraseña de la base de datos no se escribe en el flujo ni en el repositori
 | Nombre de usuario | `rpa_robot` |
 | Contraseña | la del usuario `rpa_robot` |
 
-> **📸 Pendiente:** `09c_credencial_quetzalmart_bd.png` (credencial creada, sin mostrar la contraseña).
-
 ![Credencial QuetzalMart_BD](../Capturas/09c_credencial_quetzalmart_bd.png)
 
 ### 1.7 Abrir el proyecto y validar
 
 1. Studio › **Open** › `Proyecto\RPA\QuetzalMart_RPA_Carga\project.json`.
-2. La primera vez Studio descarga los paquetes `UiPath.Excel.Activities`, `UiPath.Database.Activities` y `UiPath.Credentials.Activities` (necesita internet).
+2. La primera vez Studio descarga los paquetes `UiPath.Excel.Activities`, `UiPath.Database.Activities` y `UiPath.Credentials.Activities` (necesita internet). Quedan en **Dependencias** junto con `UiPath.System.Activities`, que trae todo proyecto.
 3. **Design › Analyze File › Validate File**: debe terminar sin errores.
 
-> **📸 Pendiente:** `09b_uipath_paquetes_instalados.png` (Manage Packages › Project Dependencies con los tres paquetes).
-
 ![Paquetes del proyecto](../Capturas/09b_uipath_paquetes_instalados.png)
+
+4. Ejecutar el robot (**Run File**) con la carpeta `Entrada` de la sección 1.8. El panel Output debe terminar con 0 filas pendientes y el mensaje final debe mostrar las filas en estado *Procesado*.
+
+![Output de la verificación](../Capturas/09f_verificacion_output_ejecucion.png)
+
+![Mensaje de la verificación](../Capturas/09g_verificacion_message_box.png)
 
 ### 1.8 Carpeta de entrada de prueba
 
@@ -141,9 +140,7 @@ El RPA recorre toda la estructura, extrae solo esas hojas, las consolida y las c
 |---|---|
 | Name, Company Type, Related Company, Email, Phone, Street, Street2, City, State, Zip, Country, Tax ID, Website, Tags, Reference, Notes | External ID, Name, Product Type, Internal Reference, Barcode, Sales Price, Cost, Weight, Sales Description, Product Values, Cantidad a la mano, Está publicado |
 
-Los encabezados son los de los Excel de ejemplo del catedrático. El enunciado dice «ID Externo», pero el auxiliar aclaró (foro, 06/10) que la columna se llama **External ID**. El robot acepta los dos nombres y otras variantes (`Name*`, `Company Type*`, tildes, mayúsculas) y lee `.xls` y `.xlsx`.
-
-Obligatorios (según el auxiliar, foro del 26/09): en clientes **Name** y **Company Type**; en productos **External ID**, **Name** y **Product Type**. Las demás columnas pueden venir vacías. **Product Values** siempre vendrá vacía en la calificación (auxiliar, foro del 06/10), porque requiere configurar atributos de variantes que el enunciado no pide.
+Obligatorios: en clientes **Name** y **Company Type**; en productos **External ID**, **Name** y **Product Type**. Las demás columnas pueden venir vacías.
 
 ### 2.4 Ciclo de una ejecución
 
@@ -203,9 +200,11 @@ También crea el menú **Cargas RPA** con *Clientes cargados* y *Productos carga
 
 **Paso 2 · Acción planificada.** En *Settings › Technical › Automation › Scheduled Actions* se crea **RPA - Procesar cargas pendientes**, modelo *Carga RPA - Clientes*, cada **1 minuto**, tipo *Execute Code*, con el código de `01-Odoo/02_scheduled_action_procesar_cargas.py`, y se deja **Active**.
 
-> **📸 Pendiente:** `05b_scheduled_action_procesar_cargas.png` (formulario con el código, *Execute Every 1 Minutes* y *Active*).
+![Scheduled Action](../Capturas/05b_scheduled_action_procesar_cargas.webp)
 
-![Scheduled Action](../Capturas/05b_scheduled_action_procesar_cargas.png)
+![Cada 1 minuto y activa](../Capturas/05c_scheduled_action_cada_minuto_activa.png)
+
+El botón **Run Manually** ejecuta la acción en ese momento sin esperar al siguiente minuto. No hace falta usarlo: con *Active* encendido, Odoo la corre sola cada minuto.
 
 **Paso 3 · Usuario del robot con permisos mínimos.** Conectado como `odoo` (DBeaver), se ejecuta `02-PostgreSQL/01_crear_usuario_robot.sql`:
 
@@ -335,8 +334,6 @@ El diagrama completo del flujo está en el Manual 2 (`Documentacion/Manual2_RPA.
 
 ![Mensaje final](../Capturas/43_ejecucion_message_box_resumen.png)
 
-> **📸 Pendiente:** `43b_carpeta_salida_consolidados.png` (Explorador en `Salida\<lote>` con `clientes_consolidado.xlsx`, `productos_consolidado.xlsx` y `resumen.xlsx`).
-
 ![Carpeta Salida](../Capturas/43b_carpeta_salida_consolidados.png)
 
 **En Odoo (nivel web).** Todas las filas en *Procesado*, con el mensaje y el ID creado:
@@ -350,8 +347,6 @@ El diagrama completo del flujo está en el Manual 2 (`Documentacion/Manual2_RPA.
 ![Existencias](../Capturas/47_odoo_inventario_on_hand.webp)
 
 ![Tienda](../Capturas/48_odoo_tienda_categoria_cargados_por_rpa.webp)
-
-> **📸 Pendiente:** `48b_tienda_filtrada_cargados_por_rpa.png` (tienda con la categoría «Cargados por RPA» seleccionada, mostrando solo los productos del robot).
 
 ![Tienda filtrada](../Capturas/48b_tienda_filtrada_cargados_por_rpa.png)
 
