@@ -182,3 +182,14 @@ poetry.toml
 pyrightconfig.json
 
 # End of https://www.toptal.com/developers/gitignore/api/python
+Guia_RPA_UiPath_QuetzalMart.html
+# Salidas de cada corrida del robot RPA (se regeneran)
+Proyecto/RPA/Salida/
+
+# Cache local de UiPath Studio
+Proyecto/RPA/QuetzalMart_RPA_Carga/.local/
+Proyecto/RPA/QuetzalMart_RPA_Carga/~*.xaml
+
+# Notas personales (no se suben)
+Proyecto/RPA/ESTADO_RPA.md
+Proyecto/Enunciado/distribucion_tareas_grupo.png
